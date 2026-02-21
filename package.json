@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "npm run fetch-vods && cross-env react-app-rewired build && rm -rf prod/ && mv build/ prod/",
+    "build": "npm run fetch-vods && react-app-rewired build && rm -rf prod && mv build prod",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "fetch-vods": "node scripts/fetch-vods.js"

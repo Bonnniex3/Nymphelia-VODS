@@ -130,6 +130,7 @@ async function fetchVods() {
 
     } catch (error) {
         console.error('Error fetching VODs:', error);
+        process.exit(1);
     }
 }
 
