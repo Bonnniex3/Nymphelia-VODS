@@ -4,11 +4,9 @@ import Logo from "../assets/logo.png";
 import CustomLink from "../utils/CustomLink";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import SvgIcon from "@mui/material/SvgIcon";
-import RedditIcon from "@mui/icons-material/Reddit";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import Drawer from "./Drawer";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
-import ReportIcon from "@mui/icons-material/Report";
 
 const socials = [
   {

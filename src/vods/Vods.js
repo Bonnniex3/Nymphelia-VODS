@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { Box, Typography, Pagination, Grid, useMediaQuery, PaginationItem, TextField, InputAdornment, FormControl, InputLabel, Select, MenuItem, Paper } from "@mui/material";
 import SimpleBar from "simplebar-react";
-import ErrorBoundary from "../utils/ErrorBoundary";
 // import AdSense from "react-adsense";
 import Footer from "../utils/Footer";
 import Loading from "../utils/Loading";

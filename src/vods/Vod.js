@@ -1,4 +1,4 @@
-import { Box, Typography, Grid, Button, Paper } from "@mui/material";
+import { Box, Typography, Grid, Paper } from "@mui/material";
 import Thumbnail from "../assets/default_thumbnail.png";
 import Chapters from "./ChaptersMenu";
 import WatchMenu from "./WatchMenu";

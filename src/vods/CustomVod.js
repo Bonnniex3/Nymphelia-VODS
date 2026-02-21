@@ -13,8 +13,6 @@ import { toHMS, convertTimestamp } from "../utils/helpers";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MOCK_VODS from "./data/vods.json";
 
-const API_BASE = process.env.REACT_APP_VODS_API_BASE;
-
 export default function Vod(props) {
   const location = useLocation();
   const isPortrait = useMediaQuery("(orientation: portrait)");
@@ -25,11 +23,11 @@ export default function Vod(props) {
   const [chapter, setChapter] = useState(undefined);
   const [showMenu, setShowMenu] = useState(true);
   const [currentTime, setCurrentTime] = useState(undefined);
-  const [playing, setPlaying] = useState({ playing: false });
+  const [, setPlaying] = useState({ playing: false });
   const search = new URLSearchParams(location.search);
   const [timestamp, setTimestamp] = useState(search.get("t") !== null ? convertTimestamp(search.get("t")) : 0);
   const [delay, setDelay] = useState(0);
-  const [userChatDelay, setUserChatDelay] = useState(0);
+  const [userChatDelay] = useState(0);
   const playerRef = useRef(null);
 
   useEffect(() => {

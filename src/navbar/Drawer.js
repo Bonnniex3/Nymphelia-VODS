@@ -3,7 +3,6 @@ import { Drawer, ListItem, List, ListItemText, IconButton, Divider, Box, Link, L
 import { Menu } from "@mui/icons-material";
 import HomeIcon from "@mui/icons-material/Home";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
-import ReportIcon from "@mui/icons-material/Report";
 
 const mainLinks = [
   { title: `Home`, path: `/`, icon: <HomeIcon color="primary" /> },
