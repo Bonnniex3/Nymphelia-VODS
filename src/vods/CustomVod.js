@@ -16,7 +16,8 @@ import MOCK_VODS from "./data/vods.json";
 export default function Vod(props) {
   const location = useLocation();
   const isPortrait = useMediaQuery("(orientation: portrait)");
-  const { vodId } = useParams();
+  const { collectionId, vodId } = useParams();
+  const fullVodId = collectionId ? `${collectionId}/${vodId}` : vodId;
   const { type } = props;
   const [vod, setVod] = useState(undefined);
   const [drive, setDrive] = useState(undefined);
@@ -32,7 +33,7 @@ export default function Vod(props) {
 
   useEffect(() => {
     const fetchVod = async () => {
-       const foundVod = MOCK_VODS.find(v => v.id === vodId);
+       const foundVod = MOCK_VODS.find(v => v.id === fullVodId);
        if (foundVod) {
           setVod(foundVod);
           document.title = `${foundVod.title} - VOD`;
@@ -42,7 +43,7 @@ export default function Vod(props) {
     };
     fetchVod();
     return;
-  }, [vodId]);
+  }, [fullVodId]);
 
   useEffect(() => {
     if (!vod) return;

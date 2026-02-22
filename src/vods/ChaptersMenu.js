@@ -3,6 +3,7 @@ import { Box, IconButton, Menu, MenuItem, Typography, Tooltip } from "@mui/mater
 import CustomLink from "../utils/CustomLink";
 import humanize from "humanize-duration";
 import { toHMS } from "../utils/helpers";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function Chapters(props) {
   const { vod, isCdnAvailable } = props;
@@ -27,7 +28,7 @@ export default function Chapters(props) {
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         {vod.chapters.map((data, _) => {
           return (
-            <CustomLink key={data.gameId + data.start} href={`${DEFAULT_VOD}?t=${toHMS(data?.start || 1)}`}>
+            <CustomLink component={RouterLink} key={data.gameId + data.start} to={`${DEFAULT_VOD}?t=${toHMS(data?.start || 1)}`}>
               <MenuItem>
                 <Box sx={{ display: "flex" }}>
                   <Box sx={{ mr: 1 }}>

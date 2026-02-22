@@ -7,9 +7,12 @@ import { styled, Typography, Box } from "@mui/material";
 
 const Footer = styled((props) => (
   <Box {...props}>
-    <Box sx={{ mt: 0.5 }}>
-      <Typography variant="caption" color="textSecondary">
+    <Box sx={{ mt: 0.5, textAlign: "center" }}>
+      <Typography variant="caption" color="textSecondary" display="block">
         {`Minorikyun © ${new Date().getFullYear()}`}
+      </Typography>
+      <Typography variant="caption" color="textSecondary" display="block" sx={{ mt: 0.5 }}>
+        Made with ❤️ by Bonnniex3
       </Typography>
     </Box>
   </Box>
@@ -18,6 +21,7 @@ const Footer = styled((props) => (
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 1rem;
 `;
 
 export default Footer;

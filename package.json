@@ -16,10 +16,12 @@
     "@testing-library/user-event": "^14.6.1",
     "@videojs/themes": "^1.0.1",
     "can-autoplay": "^3.0.2",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.19",
+    "framer-motion": "^12.34.3",
     "humanize-duration": "^3.33.1",
     "lodash.debounce": "^4.0.8",
-    "postcss": "^8.5.6",
+    "lucide-react": "^0.575.0",
     "react": "^19.2.1",
     "react-adsense": "^0.1.0",
     "react-dom": "^19.2.1",
@@ -28,6 +30,7 @@
     "react-twemoji": "^0.6.0",
     "react-youtube": "^10.1.0",
     "simplebar-react": "^3.3.2",
+    "tailwind-merge": "^3.5.0",
     "tinyduration": "^3.4.1",
     "video.js": "^8.23.4",
     "videojs-hotkeys": "^0.2.30",
@@ -64,10 +67,13 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "autoprefixer": "^10.4.24",
     "babel-plugin-import": "^1.13.8",
     "cross-env": "^10.1.0",
     "customize-cra": "^1.0.0",
+    "postcss": "^8.5.6",
     "react-app-rewired": "^2.2.1",
-    "react-git-info": "^2.0.1"
+    "react-git-info": "^2.0.1",
+    "tailwindcss": "^3.4.19"
   }
 }

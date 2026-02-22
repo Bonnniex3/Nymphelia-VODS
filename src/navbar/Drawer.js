@@ -3,6 +3,7 @@ import { Drawer, ListItem, List, ListItemText, IconButton, Divider, Box, Link, L
 import { Menu } from "@mui/icons-material";
 import HomeIcon from "@mui/icons-material/Home";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
+import { Link as RouterLink } from "react-router-dom";
 
 const mainLinks = [
   { title: `Home`, path: `/`, icon: <HomeIcon color="primary" /> },
@@ -22,7 +23,7 @@ export default function DrawerComponent(props) {
               <ListItem onClick={() => setDrawerOpen(false)}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText>
-                  <Link color="primary" href={path}>
+                  <Link component={RouterLink} color="primary" to={path}>
                     {title}
                   </Link>
                 </ListItemText>

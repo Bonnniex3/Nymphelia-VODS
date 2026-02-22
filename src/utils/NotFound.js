@@ -1,6 +1,7 @@
 import { styled, Typography } from "@mui/material";
 import CustomLink from "./CustomLink";
 import Logo from "../assets/logo.png";
+import { Link as RouterLink } from "react-router-dom";
 
 const NotFound = styled((props) => {
   document.title = "Not Found - Minorikyun";
@@ -8,7 +9,7 @@ const NotFound = styled((props) => {
     <div {...props}>
       <img src={Logo} alt="" style={{ height: "auto", maxWidth: "200px" }} />
       <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
-        <CustomLink href="/">
+        <CustomLink component={RouterLink} to="/">
           <Typography variant="body2" color="textSecondary">
             Nothing over here..
           </Typography>

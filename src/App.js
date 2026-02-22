@@ -1,10 +1,11 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider, responsiveFontSizes } from "@mui/material/styles";
-import { CssBaseline, styled } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import Loading from "./utils/Loading";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { motion } from "framer-motion";
 
 const Vods = lazy(() => import("./vods/Vods"));
 const YoutubeVod = lazy(() => import("./vods/YoutubeVod"));
@@ -18,13 +19,13 @@ export default function App() {
     palette: {
       mode: "dark",
       background: {
-        default: "#2D013E",
+        default: "transparent",
       },
       primary: {
-        main: "#E9C1E3",
+        main: "#a855f7",
       },
       secondary: {
-        main: "#E9C1E3",
+        main: "#ec4899",
       },
     },
     components: {
@@ -33,24 +34,27 @@ export default function App() {
           paper: {
             color: "white",
             backgroundImage: "none",
-            backgroundColor: "#2D013E",
+            backgroundColor: "rgba(10, 10, 10, 0.95)",
+            backdropFilter: "blur(20px)",
           },
         },
       },
       MuiPaper: {
         styleOverrides: {
           root: {
-            backgroundColor: "rgba(45, 1, 62, 0.8)",
-            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(10, 10, 10, 0.6)",
+            backdropFilter: "blur(20px)",
             backgroundImage: "none",
-            color: "#E9C1E3",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            color: "#e5e7eb",
           },
         },
       },
       MuiMenu: {
         styleOverrides: {
           paper: {
-            backgroundColor: "rgba(45, 1, 62, 0.95) !important",
+            backgroundColor: "rgba(10, 10, 10, 0.95) !important",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
           }
         }
       }
@@ -64,50 +68,60 @@ export default function App() {
       <CssBaseline />
       <BrowserRouter>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Parent>
-            <Suspense fallback={<Loading />}>
-              <Routes>
-                <Route path="*" element={<NotFound />} />
-                <Route
-                  exact
-                  path="/"
-                  element={
-                    <>
-                      <Navbar />
-                      <Vods />
-                    </>
-                  }
-                />
-                <Route
-                  exact
-                  path="/vods"
-                  element={
-                    <>
-                      <Navbar />
-                      <Vods />
-                    </>
-                  }
-                />
-                <Route exact path="/youtube/:vodId" element={<YoutubeVod />} />
-                <Route exact path="/cdn/:vodId" element={<CustomVod type="cdn" />} />
-                <Route exact path="/games/:vodId" element={<Games />} />
-              </Routes>
-            </Suspense>
-          </Parent>
+          <div className="absolute inset-0 overflow-hidden flex flex-col bg-dark-900 text-gray-200">
+            {/* Animated Background Layers */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+               <motion.div 
+                 className="bg-blob blob-primary w-[800px] h-[800px] -top-1/4 -left-1/4 rounded-full"
+                 animate={{ rotate: 360 }}
+                 transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
+               />
+               <motion.div 
+                 className="bg-blob blob-secondary w-[600px] h-[600px] top-1/2 -right-1/4 rounded-full mix-blend-screen"
+                 animate={{ rotate: -360 }}
+                 transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+               />
+               <motion.div 
+                 className="bg-blob blob-primary w-[700px] h-[700px] -bottom-1/4 left-1/3 rounded-full opacity-40 mix-blend-screen"
+                 animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+               />
+            </div>
+
+            {/* Main Content App Context */}
+            <div className="relative z-10 flex flex-col h-full w-full">
+              <Suspense fallback={<Loading />}>
+                <Routes>
+                  <Route path="*" element={<NotFound />} />
+                  <Route
+                    exact
+                    path="/"
+                    element={
+                      <>
+                        <Navbar />
+                        <Vods />
+                      </>
+                    }
+                  />
+                  <Route
+                    exact
+                    path="/vods"
+                    element={
+                      <>
+                        <Navbar />
+                        <Vods />
+                      </>
+                    }
+                  />
+                  <Route exact path="/youtube/:vodId" element={<YoutubeVod />} />
+                  <Route exact path="/cdn/:collectionId/:vodId" element={<CustomVod type="cdn" />} />
+                  <Route exact path="/games/:vodId" element={<Games />} />
+                </Routes>
+              </Suspense>
+            </div>
+          </div>
         </LocalizationProvider>
       </BrowserRouter>
     </ThemeProvider>
   );
 }
-
-const Parent = styled((props) => <div {...props} />)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #2D013E 0%, #5e027f 100%);
-`;

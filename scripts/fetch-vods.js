@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const ITEM_ID = 'MINORIKYUN-2026-VODS';
-const METADATA_URL = `https://archive.org/metadata/${ITEM_ID}`;
-const DOWNLOAD_BASE = `https://archive.org/download/${ITEM_ID}`;
+const ITEM_IDS = [
+    'MINORIKYUN-2026-VODS',
+    'minorikyun-subathon',
+    'minorikyun-subathon2'
+];
 const OUTPUT_FILE = path.join(__dirname, '../src/vods/data/vods.json');
 
 // Helper to parse date from filename: [M-D-YY] Title...
@@ -51,85 +53,97 @@ function formatDuration(seconds) {
 }
 
 async function fetchVods() {
-    console.log(`Fetching metadata for ${ITEM_ID}...`);
-    
-    try {
-        const response = await fetch(METADATA_URL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const data = await response.json();
-        const files = data.files;
-        
-        if (!files) {
-            console.error('No files found in metadata.');
-            return;
-        }
+    let allVods = [];
 
-        // Filter for video files (mp4, mkv, webm) and exclude derivatives/thumbnails
-        const videoFiles = files.filter(file => {
-            const name = file.name.toLowerCase();
-            const isVideo = name.endsWith('.mp4') || name.endsWith('.mkv') || name.endsWith('.webm');
+    for (const ITEM_ID of ITEM_IDS) {
+        console.log(`Fetching metadata for ${ITEM_ID}...`);
+        const METADATA_URL = `https://archive.org/metadata/${ITEM_ID}`;
+        const DOWNLOAD_BASE = `https://archive.org/download/${ITEM_ID}`;
+        
+        try {
+            const response = await fetch(METADATA_URL);
+            if (!response.ok) {
+                console.error(`HTTP error! status: ${response.status} for ${ITEM_ID}`);
+                continue;
+            }
             
-            // Exclude common derivative suffixes
-            if (name.endsWith('.ia.mp4')) return false; 
-            if (name.endsWith('.512kb.mp4')) return false;
+            const data = await response.json();
+            const files = data.files;
             
-            return isVideo && file.format !== 'Thumbnail' && file.format !== 'Metadata' && file.size > 1000000; // >1MB
-        });
-
-        const vods = videoFiles.map(file => {
-            const { date, title } = parseDateAndTitle(file.name);
-            
-            // Construct direct download link
-            // The file.name in the metadata response is the path relative to the item root
-            const videoUrl = `${DOWNLOAD_BASE}/${encodeURIComponent(file.name)}`;
-            
-            // Try to find a thumbnail
-            // Archive.org usually creates a thumbnail with suffix .thumbs/[filename]_000001.jpg
-            // The 'files' array usually contains these thumbnail files explicitly
-            
-            // 1. Try to find a file that starts with the video filename (minus extension) and ends in .jpg
-            const baseName = file.name.substring(0, file.name.lastIndexOf('.'));
-            
-            let thumbFile = files.find(f => 
-                (f.name.includes(`${baseName}_000001.jpg`) || f.name.includes(`${baseName}.jpg`)) &&
-                f.format === 'Thumbnail'
-            );
-            
-            // 2. Fallback: try to find any thumbnail that contains the base name
-            if (!thumbFile) {
-                 thumbFile = files.find(f => f.name.includes(baseName) && f.format === 'Thumbnail');
+            if (!files) {
+                console.error(`No files found in metadata for ${ITEM_ID}.`);
+                continue;
             }
 
-            const thumbnailUrl = thumbFile 
-                ? `${DOWNLOAD_BASE}/${encodeURIComponent(thumbFile.name)}`
-                : `https://archive.org/services/img/${ITEM_ID}`;
+            // Filter for video files (mp4, mkv, webm) and exclude derivatives/thumbnails
+            const videoFiles = files.filter(file => {
+                const name = file.name.toLowerCase();
+                const isVideo = name.endsWith('.mp4') || name.endsWith('.mkv') || name.endsWith('.webm');
+                
+                // Exclude common derivative suffixes
+                if (name.endsWith('.ia.mp4')) return false; 
+                if (name.endsWith('.512kb.mp4')) return false;
+                
+                return isVideo && file.format !== 'Thumbnail' && file.format !== 'Metadata' && file.size > 1000000; // >1MB
+            });
 
-            return {
-                id: file.name, // Use filename as unique ID
-                title: title || file.name,
-                createdAt: date,
-                duration: formatDuration(file.length || file.duration), 
-                thumbnail_url: thumbnailUrl,
-                video_url: videoUrl,
-                drive: [], // Keep structure compatible
-                youtube: [],
-                games: [],
-                chapters: []
-            };
-        });
+            const vods = videoFiles.map(file => {
+                const { date, title } = parseDateAndTitle(file.name);
+                
+                // Construct direct download link
+                const videoUrl = `${DOWNLOAD_BASE}/${encodeURIComponent(file.name)}`;
+                
+                // Try to find a thumbnail
+                const baseName = file.name.substring(0, file.name.lastIndexOf('.'));
+                
+                let thumbFile = files.find(f => 
+                    (f.name.includes(`${baseName}_000001.jpg`) || f.name.includes(`${baseName}.jpg`)) &&
+                    f.format === 'Thumbnail'
+                );
+                
+                if (!thumbFile) {
+                     thumbFile = files.find(f => f.name.includes(baseName) && f.format === 'Thumbnail');
+                }
 
-        // Sort by date descending
-        vods.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                const thumbnailUrl = thumbFile 
+                    ? `${DOWNLOAD_BASE}/${encodeURIComponent(thumbFile.name)}`
+                    : `https://archive.org/services/img/${ITEM_ID}`;
 
-        console.log(`Found ${vods.length} VODs.`);
+                return {
+                    id: `${ITEM_ID}/${file.name}`, // Create a composite ID to avoid collisions across items
+                    item_id: ITEM_ID,
+                    file_name: file.name,
+                    title: title || file.name,
+                    createdAt: date,
+                    duration: formatDuration(file.length || file.duration), 
+                    thumbnail_url: thumbnailUrl,
+                    video_url: videoUrl,
+                    drive: [], // Keep structure compatible
+                    youtube: [],
+                    games: [],
+                    chapters: []
+                };
+            });
+
+            allVods = allVods.concat(vods);
+            console.log(`Found ${vods.length} VODs in ${ITEM_ID}.`);
+
+        } catch (error) {
+            console.error(`Error fetching VODs for ${ITEM_ID}:`, error);
+        }
+    }
+
+    try {
+        // Sort all accumulated vods by date descending
+        allVods.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        console.log(`\nTotal: Found ${allVods.length} VODs across all collections.`);
         
         // Write to file
-        fs.writeFileSync(OUTPUT_FILE, JSON.stringify(vods, null, 2));
+        fs.writeFileSync(OUTPUT_FILE, JSON.stringify(allVods, null, 2));
         console.log(`Successfully saved to ${OUTPUT_FILE}`);
-
     } catch (error) {
-        console.error('Error fetching VODs:', error);
+        console.error('Error saving combined VODs:', error);
         process.exit(1);
     }
 }
