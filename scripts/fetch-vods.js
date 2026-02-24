@@ -7,6 +7,33 @@ const ITEM_IDS = [
     'minorikyun-subathon2'
 ];
 const OUTPUT_FILE = path.join(__dirname, '../src/vods/data/vods.json');
+const THUMBNAILS_DIR = path.join(__dirname, '../public/thumbnails');
+
+// Ensure thumbnails directory exists
+if (!fs.existsSync(THUMBNAILS_DIR)) {
+    fs.mkdirSync(THUMBNAILS_DIR, { recursive: true });
+}
+
+async function downloadThumbnail(url, filename) {
+    const destPath = path.join(THUMBNAILS_DIR, filename);
+    if (fs.existsSync(destPath)) {
+        return `/thumbnails/${filename}`;
+    }
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        fs.writeFileSync(destPath, buffer);
+        console.log(`  -> Downloaded thumbnail: ${filename}`);
+        return `/thumbnails/${filename}`;
+    } catch (err) {
+        console.error(`  -> Failed to download thumbnail ${url}:`, err.message);
+        return url; // fallback to external url
+    }
+}
 
 // Helper to parse date from filename: [M-D-YY] Title...
 // Example: [1-11-26] Minorikyun...
@@ -87,7 +114,7 @@ async function fetchVods() {
                 return isVideo && file.format !== 'Thumbnail' && file.format !== 'Metadata' && file.size > 1000000; // >1MB
             });
 
-            const vods = videoFiles.map(file => {
+            const vods = await Promise.all(videoFiles.map(async file => {
                 const { date, title } = parseDateAndTitle(file.name);
                 
                 // Construct direct download link
@@ -109,6 +136,9 @@ async function fetchVods() {
                     ? `${DOWNLOAD_BASE}/${encodeURIComponent(thumbFile.name)}`
                     : `https://archive.org/services/img/${ITEM_ID}`;
 
+                const safeFilename = `${ITEM_ID}_${file.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.jpg`;
+                const localThumbnailUrl = await downloadThumbnail(thumbnailUrl, safeFilename);
+
                 return {
                     id: `${ITEM_ID}/${file.name}`, // Create a composite ID to avoid collisions across items
                     item_id: ITEM_ID,
@@ -116,14 +146,14 @@ async function fetchVods() {
                     title: title || file.name,
                     createdAt: date,
                     duration: formatDuration(file.length || file.duration), 
-                    thumbnail_url: thumbnailUrl,
+                    thumbnail_url: localThumbnailUrl,
                     video_url: videoUrl,
                     drive: [], // Keep structure compatible
                     youtube: [],
                     games: [],
                     chapters: []
                 };
-            });
+            }));
 
             allVods = allVods.concat(vods);
             console.log(`Found ${vods.length} VODs in ${ITEM_ID}.`);

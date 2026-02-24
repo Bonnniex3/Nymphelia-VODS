@@ -77,12 +77,12 @@ export default function App() {
                  transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
                />
                <motion.div 
-                 className="bg-blob blob-secondary w-[600px] h-[600px] top-1/2 -right-1/4 rounded-full mix-blend-screen"
+                 className="bg-blob blob-secondary w-[600px] h-[600px] top-1/2 -right-1/4 rounded-full"
                  animate={{ rotate: -360 }}
                  transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
                />
                <motion.div 
-                 className="bg-blob blob-primary w-[700px] h-[700px] -bottom-1/4 left-1/3 rounded-full opacity-40 mix-blend-screen"
+                 className="bg-blob blob-primary w-[700px] h-[700px] -bottom-1/4 left-1/3 rounded-full opacity-40"
                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                />

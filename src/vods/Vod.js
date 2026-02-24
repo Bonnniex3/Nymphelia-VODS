@@ -15,20 +15,22 @@ export default function Vod(props) {
   const DEFAULT_THUMBNAIL = vod.youtube.length > 0 ? vod.youtube[0].thumbnail_url : vod.games.length > 0 ? vod.games[0].thumbnail_url : vod.thumbnail_url ? vod.thumbnail_url : Thumbnail;
 
   return (
-    <div className="w-[20rem] p-2 flex-shrink-0 group">
-      <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-dark-800/80 backdrop-blur-md border border-white/10 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(168,85,247,0.3)] hover:border-primary/50 relative">
-        <div className="overflow-hidden relative pt-[56.25%] bg-black cursor-pointer" onClick={(e) => setAnchorEl(e.currentTarget)}>
+    <div className="w-full sm:w-[20rem] sm:max-w-[20rem] p-2 group">
+      <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-dark-800/80 backdrop-blur-md border border-white/10 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(168,85,247,0.3)] hover:border-primary/50 relative transform-gpu">
+        <div className="overflow-hidden relative aspect-video bg-black cursor-pointer" onClick={(e) => setAnchorEl(e.currentTarget)}>
           <img
-            className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110 opacity-90 group-hover:opacity-100"
+            loading="lazy"
+            decoding="async"
+            className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110 opacity-90 group-hover:opacity-100 transform-gpu"
             alt=""
             src={DEFAULT_THUMBNAIL}
           />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <div className="bg-primary/90 rounded-full p-4 transform scale-50 group-hover:scale-100 transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.6)]">
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out flex items-center justify-center">
+            <div className="bg-primary/90 rounded-full p-4 transform scale-50 group-hover:scale-100 transition-all duration-500 ease-out shadow-[0_0_20px_rgba(168,85,247,0.6)]">
               <Play className="w-8 h-8 text-white ml-1" fill="currentColor" />
             </div>
           </div>
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500 ease-out">
             <div className="absolute bottom-2 left-2 flex gap-1">
               <span className="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-white/10 text-gray-200 text-xs font-medium shadow-sm">
                 {dayjs(vod.createdAt).format("MMM D, YYYY")}
@@ -41,7 +43,7 @@ export default function Vod(props) {
             </div>
           </div>
         </div>
-        <div className="p-4 flex flex-col flex-grow bg-gradient-to-b from-dark-800/50 to-dark-900/50">
+        <div className="p-4 flex flex-col flex-grow bg-gradient-to-b from-dark-800/50 to-dark-900/50 relative z-10 -mt-[1px]">
           <div className="flex items-start mb-3">
             {vod.chapters && vod.chapters.length > 0 && (
               <div className="mr-2 mt-0.5 flex-shrink-0" onClick={(e) => e.stopPropagation()}>

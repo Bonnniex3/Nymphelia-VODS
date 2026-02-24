@@ -67,9 +67,12 @@ export default function Player(props) {
       }
     });
 
-    // Save position every 5 seconds
+    // Save position every 5 seconds without spamming storage
+    let lastSavedTime = 0;
     player.on("timeupdate", () => {
-      if (Math.floor(player.currentTime()) % 5 === 0) {
+      const currentTime = Math.floor(player.currentTime());
+      if (currentTime > 0 && currentTime % 5 === 0 && currentTime !== lastSavedTime) {
+        lastSavedTime = currentTime;
         savePosition(player);
       }
     });

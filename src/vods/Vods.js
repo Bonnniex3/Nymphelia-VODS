@@ -92,7 +92,6 @@ export default function Vods() {
   const limit = isMobile ? 10 : 20;
 
   useEffect(() => {
-    setVods(null);
     const fetchVods = async () => {
       // Client-side filtering simulation
       let filtered = [...MOCK_VODS];
@@ -109,7 +108,6 @@ export default function Vods() {
       setTotalVods(filtered.length);
     };
     fetchVods();
-    return;
   }, [limit, page, filter, filterStartDate, filterEndDate, filterTitle, filterGame, platform]);
 
   const changeFilter = (value) => {
@@ -134,19 +132,17 @@ export default function Vods() {
   const handleTitleChange = useMemo(
     () =>
       debounce((evt) => {
-        if (evt.target.value.length === 0) return;
         setFilterTitle(evt.target.value);
       }, 1000),
-    [setFilterTitle]
+    []
   );
 
   const handleGameChange = useMemo(
     () =>
       debounce((evt) => {
-        if (evt.target.value.length === 0) return;
         setFilterGame(evt.target.value);
       }, 1000),
-    [setFilterGame]
+    []
   );
 
   const totalPages = Math.ceil(totalVods / limit);
@@ -235,7 +231,7 @@ export default function Vods() {
         </div>
         {vods ? (
           <motion.div 
-            className="mt-4 flex flex-wrap justify-center gap-4"
+            className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 w-full"
             key={page} // Forces re-animation when page changes
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -276,6 +272,8 @@ export default function Vods() {
               disabled={totalPages <= 1}
               color="primary"
               page={page}
+              siblingCount={isMobile ? 0 : 1}
+              boundaryCount={isMobile ? 1 : 1}
               renderItem={(item) => <PaginationItem component={Link} to={`${location.pathname}${item.page === 1 ? "" : `?page=${item.page}`}`} {...item} />}
             />
             <TextField

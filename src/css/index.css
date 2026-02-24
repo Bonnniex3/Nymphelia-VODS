@@ -83,22 +83,23 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
 /* Modern Animated Background Blobs */
 .bg-blob {
   position: absolute;
-  filter: blur(120px);
   z-index: 0;
   opacity: 0.6;
   animation: blob-float 20s infinite alternate ease-in-out;
+  transform: translateZ(0); /* Hardware acceleration */
+  will-change: transform, opacity;
 }
 
 @keyframes blob-float {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(5%, 5%) scale(1.1); }
-  100% { transform: translate(-5%, -5%) scale(0.9); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(5%, 5%, 0) scale(1.1); }
+  100% { transform: translate3d(-5%, -5%, 0) scale(0.9); }
 }
 
 .blob-primary {
-  background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, rgba(0,0,0,0) 70%);
+  background: radial-gradient(circle closest-side, rgba(168,85,247,0.15) 0%, rgba(168,85,247,0.05) 50%, rgba(0,0,0,0) 100%);
 }
 
 .blob-secondary {
-  background: radial-gradient(circle, rgba(236,72,153,0.3) 0%, rgba(0,0,0,0) 70%);
+  background: radial-gradient(circle closest-side, rgba(236,72,153,0.15) 0%, rgba(236,72,153,0.05) 50%, rgba(0,0,0,0) 100%);
 }
