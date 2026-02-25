@@ -12,10 +12,10 @@ dayjs.extend(localizedFormat);
 export default function Vod(props) {
   const { vod, isCdnAvailable } = props;
   const [anchorEl, setAnchorEl] = useState(null);
-  const DEFAULT_THUMBNAIL = vod.youtube.length > 0 ? vod.youtube[0].thumbnail_url : vod.games.length > 0 ? vod.games[0].thumbnail_url : vod.thumbnail_url ? vod.thumbnail_url : Thumbnail;
+  const DEFAULT_THUMBNAIL = vod.thumbnail_url ? vod.thumbnail_url : Thumbnail;
 
   return (
-    <div className="w-full sm:w-[20rem] sm:max-w-[20rem] p-2 group">
+    <div className="w-full h-full group">
       <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-dark-800/80 backdrop-blur-md border border-white/10 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(168,85,247,0.3)] hover:border-primary/50 relative transform-gpu">
         <div className="overflow-hidden relative aspect-video bg-black cursor-pointer" onClick={(e) => setAnchorEl(e.currentTarget)}>
           <img

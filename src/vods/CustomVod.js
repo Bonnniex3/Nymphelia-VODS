@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { Box, Typography, Tooltip, useMediaQuery, IconButton, Collapse, Divider, Paper } from "@mui/material";
+import { Box, Typography, Tooltip, useMediaQuery, IconButton, Collapse, Paper } from "@mui/material";
 import Loading from "../utils/Loading";
 import { useLocation, useParams } from "react-router-dom";
 import DownloadIcon from "@mui/icons-material/Download";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomPlayer from "./CustomPlayer";
-// import Chat from "./Chat";
 import Chapters from "./VodChapters";
 import ExpandMore from "../utils/CustomExpandMore";
 import CustomWidthTooltip from "../utils/CustomToolTip";
@@ -128,19 +127,6 @@ export default function Vod(props) {
             </Paper>
           </Collapse>
         </Box>
-        {isPortrait && <Divider />}
-        {/*
-          <Chat
-            isPortrait={isPortrait}
-            vodId={vodId}
-            playerRef={playerRef}
-            playing={playing}
-            currentTime={currentTime}
-            delay={delay}
-            userChatDelay={userChatDelay}
-            setUserChatDelay={setUserChatDelay}
-          />
-        */}
       </Box>
     </Box>
   );

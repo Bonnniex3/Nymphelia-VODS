@@ -8,9 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { motion } from "framer-motion";
 
 const Vods = lazy(() => import("./vods/Vods"));
-const YoutubeVod = lazy(() => import("./vods/YoutubeVod"));
 const CustomVod = lazy(() => import("./vods/CustomVod"));
-const Games = lazy(() => import("./games/Games"));
 const Navbar = lazy(() => import("./navbar/Navbar"));
 const NotFound = lazy(() => import("./utils/NotFound"));
 
@@ -113,9 +111,7 @@ export default function App() {
                       </>
                     }
                   />
-                  <Route exact path="/youtube/:vodId" element={<YoutubeVod />} />
                   <Route exact path="/cdn/:collectionId/:vodId" element={<CustomVod type="cdn" />} />
-                  <Route exact path="/games/:vodId" element={<Games />} />
                 </Routes>
               </Suspense>
             </div>

@@ -231,7 +231,7 @@ export default function Vods() {
         </div>
         {vods ? (
           <motion.div 
-            className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 w-full"
+            className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6 w-full"
             key={page} // Forces re-animation when page changes
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
