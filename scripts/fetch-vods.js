@@ -38,31 +38,69 @@ async function downloadThumbnail(url, filename) {
 
 // Helper to parse date from filename: [M-D-YY] Title...
 // Example: [1-11-26] Minorikyun...
-function parseDateAndTitle(filename) {
-    // Regex to match [M-D-YY] or [MM-DD-YY] at start
-    const dateRegex = /^\[(\d{1,2})-(\d{1,2})-(\d{2,4})\]\s*(.*?)(\.mp4|\.mkv|\.webm)$/i;
-    const match = filename.match(dateRegex);
+function parseDateAndTitle(file) {
+    const filename = file.name;
+    let title = filename.replace(/(\.mp4|\.mkv|\.webm)$/i, '');
+    let dateObj = null;
 
-    if (match) {
-        let [_, month, day, year, title] = match;
-        
-        // Handle 2-digit year (assume 20xx)
+    // Pattern 1: [M-D-YY] or [MM-DD-YY] maybe with something like (2)
+    // e.g. [2-3-26] nymphelia - ... or [12-19-25](2) nymphelia - ...
+    let m = filename.match(/^\[(\d{1,2})-(\d{1,2})-(\d{2,4})\](?:\(\d+\))?\s*(?:nymphelia\s*-\s*)?(.*?)(\.mp4|\.mkv|\.webm)$/i);
+    if (m) {
+        let [_, month, day, year, restTitle] = m;
         if (year.length === 2) year = '20' + year;
-        
-        // Pad month/day
-        month = month.padStart(2, '0');
-        day = day.padStart(2, '0');
-
-        return {
-            date: `${year}-${month}-${day}T00:00:00.000Z`,
-            title: title.trim()
-        };
+        dateObj = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`);
+        return { date: dateObj.toISOString(), title: restTitle.trim() || title };
     }
 
-    // Fallback if no date pattern found
+    // Pattern 2: twitch_nymphelia_YYYY-MM-DD HH-MM-SS
+    m = filename.match(/^twitch_nymphelia_(\d{4})-(\d{2})-(\d{2})\s+(\d{2})-(\d{2})-(\d{2})_(.*?)(\.mp4|\.mkv|\.webm)$/i);
+    if (m) {
+        let [_, year, month, day, hr, min, sec, restTitle] = m;
+        dateObj = new Date(`${year}-${month}-${day}T${hr}:${min}:${sec}.000Z`);
+        // Cleanup title like "_1080p_Just Chatting_REACTING..."
+        let cleanedTitle = restTitle.replace(/_([0-9]+p_)?(?:Just Chatting_)?/i, ' ').replace(/_/g, ' ').trim();
+        return { date: dateObj.toISOString(), title: cleanedTitle || title };
+    }
+
+    // Pattern 3: nymphelia - YYYY-MM-DD - ...
+    m = filename.match(/^nymphelia\s*-\s*(\d{4})-(\d{2})-(\d{2})\s*-\s*(.*?)(\.mp4|\.mkv|\.webm)$/i);
+    if (m) {
+        let [_, year, month, day, restTitle] = m;
+        dateObj = new Date(`${year}-${month}-${day}T00:00:00.000Z`);
+        // Sometimes title has [VOD_ID] at the end, that's fine to keep
+        return { date: dateObj.toISOString(), title: restTitle.trim() || title };
+    }
+
+    // Pattern 4: DD.MM.YY-xxx.mp4
+    m = filename.match(/^(\d{1,2})[\._](\d{1,2})[\._](\d{2,4})-(.*?)(\.mp4|\.mkv|\.webm)$/i);
+    if (m) {
+        let [_, day, month, year, restTitle] = m;
+        if (year.length === 2) year = '20' + year;
+        dateObj = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00.000Z`);
+        return { date: dateObj.toISOString(), title: title };
+    }
+
+    // Pattern 5: Nymphelia_YYYY_MM_DD...
+    m = filename.match(/^nymphelia_(\d{4})_(\d{2})_(\d{2})_*(.*?)(\.mp4|\.mkv|\.webm)$/i);
+    if (m) {
+        let [_, year, month, day, restTitle] = m;
+        dateObj = new Date(`${year}-${month}-${day}T00:00:00.000Z`);
+        return { date: dateObj.toISOString(), title: title };
+    }
+
+    // Fallback: Use file.mtime if available
+    let fallbackDate = new Date();
+    if (file.mtime) {
+        // file.mtime is seconds since epoch
+        fallbackDate = new Date(parseInt(file.mtime) * 1000);
+    } else {
+        fallbackDate = new Date('2024-01-01T00:00:00.000Z');
+    }
+
     return {
-        date: new Date().toISOString(), // Default to now or file creation time if available
-        title: filename.replace(/(\.mp4|\.mkv|\.webm)$/i, '')
+        date: fallbackDate.toISOString(),
+        title: title
     };
 }
 
@@ -116,7 +154,7 @@ async function fetchVods() {
             });
 
             const vods = await Promise.all(videoFiles.map(async file => {
-                const { date, title } = parseDateAndTitle(file.name);
+                const { date, title } = parseDateAndTitle(file);
                 
                 // Construct direct download link
                 const videoUrl = `${DOWNLOAD_BASE}/${encodeURIComponent(file.name)}`;
