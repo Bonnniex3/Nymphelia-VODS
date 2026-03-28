@@ -4,7 +4,7 @@ import Logo from "../assets/logo.png";
 import { Link as RouterLink } from "react-router-dom";
 
 const NotFound = styled((props) => {
-  document.title = "Not Found - Minorikyun";
+  document.title = "Not Found - Nymphelia";
   return (
     <div {...props}>
       <img src={Logo} alt="" style={{ height: "auto", maxWidth: "200px" }} />

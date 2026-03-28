@@ -15,7 +15,7 @@ const NotFound = lazy(() => import("./utils/NotFound"));
 export default function App() {
   let darkTheme = createTheme({
     palette: {
-      mode: "dark",
+      mode: "light",
       background: {
         default: "transparent",
       },
@@ -66,7 +66,7 @@ export default function App() {
       <CssBaseline />
       <BrowserRouter>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <div className="absolute inset-0 overflow-hidden flex flex-col bg-dark-900 text-gray-200">
+          <div className="absolute inset-0 overflow-hidden flex flex-col bg-pink-50 text-gray-800">
             {/* Animated Background Layers */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
                <motion.div 

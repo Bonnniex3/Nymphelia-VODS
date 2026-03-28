@@ -36,7 +36,7 @@ const CustomDropdown = ({ value, options, onChange, label, icon: Icon }) => {
   return (
     <div className="relative flex-1 w-full min-w-[12rem]" ref={dropdownRef}>
       <div 
-        className={`flex items-center justify-between w-full px-4 py-3.5 bg-dark-900/50 border ${isOpen ? 'border-primary' : 'border-white/10'} rounded-xl hover:border-primary/50 transition-all cursor-pointer shadow-inner`}
+        className={`flex items-center justify-between w-full px-4 py-3.5 bg-white/50 border ${isOpen ? 'border-primary' : 'border-pink-200'} rounded-xl hover:border-primary/50 transition-all cursor-pointer shadow-inner`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ const CustomDropdown = ({ value, options, onChange, label, icon: Icon }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 bg-dark-800/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] overflow-hidden"
+            className="absolute z-50 w-full mt-2 bg-white/95 backdrop-blur-xl border border-pink-200 rounded-xl shadow-[0_8px_30px_rgba(244,114,182,0.2)] overflow-hidden"
           >
             {options.map((opt) => (
               <div 
@@ -165,7 +165,7 @@ export default function Vods() {
             </h1>
           )}
         </div>
-        <div className="p-4 mb-4 mx-2 md:mx-10 flex flex-col md:flex-row items-center gap-4 rounded-xl bg-dark-800/80 backdrop-blur-md border border-white/10 shadow-lg relative z-20">
+        <div className="p-4 mb-4 mx-2 md:mx-10 flex flex-col md:flex-row items-center gap-4 rounded-xl bg-white/80 backdrop-blur-md border border-pink-200 shadow-lg relative z-20">
           <CustomDropdown 
             label="Filter"
             value={filter}
@@ -203,7 +203,7 @@ export default function Vods() {
               <input 
                 type="text" 
                 placeholder="Search by Title..."
-                className="w-full pl-12 pr-4 py-3.5 bg-dark-900/50 border border-white/10 rounded-xl focus:outline-none focus:border-primary/50 text-gray-200 text-sm transition-colors shadow-inner"
+                className="w-full pl-12 pr-4 py-3.5 bg-white/50 border border-pink-200 rounded-xl focus:outline-none focus:border-primary/50 text-gray-800 text-sm transition-colors shadow-inner"
                 onChange={handleTitleChange} 
                 defaultValue={filterTitle} 
               />
@@ -215,7 +215,7 @@ export default function Vods() {
               <input 
                 type="text" 
                 placeholder="Search by Game..."
-                className="w-full pl-12 pr-4 py-3.5 bg-dark-900/50 border border-white/10 rounded-xl focus:outline-none focus:border-primary/50 text-gray-200 text-sm transition-colors shadow-inner"
+                className="w-full pl-12 pr-4 py-3.5 bg-white/50 border border-pink-200 rounded-xl focus:outline-none focus:border-primary/50 text-gray-800 text-sm transition-colors shadow-inner"
                 onChange={handleGameChange} 
                 defaultValue={filterGame} 
               />

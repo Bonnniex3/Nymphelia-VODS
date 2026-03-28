@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-dark-900 text-gray-200 antialiased font-sans;
+  @apply bg-pink-50 text-gray-800 antialiased font-sans;
 }
 
 ul {
@@ -59,7 +59,7 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-dark-900;
+  @apply bg-pink-50;
 }
 
 ::-webkit-scrollbar-thumb {

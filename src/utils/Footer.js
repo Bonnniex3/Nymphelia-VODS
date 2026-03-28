@@ -9,7 +9,7 @@ const Footer = styled((props) => (
   <Box {...props}>
     <Box sx={{ mt: 0.5, textAlign: "center" }}>
       <Typography variant="caption" color="textSecondary" display="block">
-        {`Minorikyun © ${new Date().getFullYear()}`}
+        {`Nymphelia © ${new Date().getFullYear()}`}
       </Typography>
       <Typography variant="caption" color="textSecondary" display="block" sx={{ mt: 0.5 }}>
         Made with ❤️ by Bonnniex3
