@@ -19,7 +19,7 @@ const socials = [
     ),
   },
   {
-    path: `https://x.com/nymphelia`,
+    path: `https://x.com/nymphelia_`,
     icon: <TwitterIcon sx={{ color: '#f472b6' }} />,
   },
   {
@@ -30,7 +30,7 @@ const socials = [
       </SvgIcon>
     ),
   },
-  { path: `https://www.youtube.com/@Nymphelia`, icon: <YouTubeIcon sx={{ color: '#f472b6' }} /> },
+  { path: `https://www.youtube.com/@nympheliach`, icon: <YouTubeIcon sx={{ color: '#f472b6' }} /> },
 ];
 
 export default function Navbar() {
