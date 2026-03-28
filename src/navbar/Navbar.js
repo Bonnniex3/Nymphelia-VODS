@@ -35,7 +35,7 @@ const socials = [
 
 export default function Navbar() {
   return (
-    <nav className="flex-none bg-white/60 backdrop-blur-xl border-b border-pink-200 w-full px-4 py-3 sticky top-0 z-50 shadow-lg shadow-black/20">
+    <nav className="flex-none bg-[#23151a]/80 backdrop-blur-xl border-b border-pink-500/20 w-full px-4 py-3 sticky top-0 z-50 shadow-lg shadow-black/20">
       <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
         {/* Left side: Logo, Brand, Socials */}
         <div className="flex items-center space-x-3 flex-1">
@@ -62,7 +62,7 @@ export default function Navbar() {
             </span>
             </RouterLink>
           </motion.div>
-          <div className="hidden md:flex items-center space-x-4 pl-6 ml-4 border-l border-pink-200 h-8">
+          <div className="hidden md:flex items-center space-x-4 pl-6 ml-4 border-l border-pink-500/20 h-8">
             {socials.map(({ path, icon }) => (
               <motion.div key={path} whileHover={{ scale: 1.2, rotate: 5 }} whileTap={{ scale: 0.9 }}>
                 <CustomLink href={path} rel="noopener noreferrer" target="_blank" className="flex items-center opacity-80 hover:opacity-100 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)] transition-all">

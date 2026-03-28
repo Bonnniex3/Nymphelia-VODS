@@ -16,7 +16,7 @@ export default function Vod(props) {
 
   return (
     <div className="w-full h-full group">
-      <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-white/80 backdrop-blur-md border border-pink-200 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(244,114,182,0.3)] hover:border-primary/50 relative transform-gpu">
+      <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-[#23151a]/80 backdrop-blur-md border border-pink-500/20 transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(244,114,182,0.3)] hover:border-primary/50 relative transform-gpu">
         <div className="overflow-hidden relative aspect-video bg-black cursor-pointer" onClick={(e) => setAnchorEl(e.currentTarget)}>
           <img
             loading="lazy"
@@ -32,18 +32,18 @@ export default function Vod(props) {
           </div>
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-500 ease-out">
             <div className="absolute bottom-2 left-2 flex gap-1">
-              <span className="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-pink-200 text-gray-200 text-xs font-medium shadow-sm">
+              <span className="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-pink-500/20 text-gray-200 text-xs font-medium shadow-sm">
                 {dayjs(vod.createdAt).format("MMM D, YYYY")}
               </span>
             </div>
             <div className="absolute bottom-2 right-2">
-              <span className="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-pink-200 text-gray-200 text-xs font-medium shadow-sm">
+              <span className="px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-pink-500/20 text-gray-200 text-xs font-medium shadow-sm">
                 {vod.duration}
               </span>
             </div>
           </div>
         </div>
-        <div className="p-4 flex flex-col flex-grow bg-gradient-to-b from-white/50 to-pink-50/50 relative z-10 -mt-[1px]">
+        <div className="p-4 flex flex-col flex-grow bg-gradient-to-b from-[#23151a]/50 to-[#130b0e]/50 relative z-10 -mt-[1px]">
           <div className="flex items-start mb-3">
             {vod.chapters && vod.chapters.length > 0 && (
               <div className="mr-2 mt-0.5 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
