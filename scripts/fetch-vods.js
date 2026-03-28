@@ -2,9 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 const ITEM_IDS = [
-    'MINORIKYUN-2026-VODS',
-    'minorikyun-subathon',
-    'minorikyun-subathon2'
+    'NYMPHELIA-2025-ASMR',
+    'NYMPHELIA-GAMING26',
+    'NYMPHELIA-2026-ASMR',
+    'Nymphelia-2025-Archive'
 ];
 const OUTPUT_FILE = path.join(__dirname, '../src/vods/data/vods.json');
 const THUMBNAILS_DIR = path.join(__dirname, '../public/thumbnails');
