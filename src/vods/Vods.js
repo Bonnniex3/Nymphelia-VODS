@@ -13,10 +13,11 @@ import dayjs from "dayjs";
 import debounce from "lodash.debounce";
 import MOCK_VODS from "./data/vods.json";
 import { motion, AnimatePresence } from "framer-motion";
-import { Filter as FilterIcon, MonitorPlay, ChevronDown, Search } from "lucide-react";
+import { Filter as FilterIcon, MonitorPlay, ChevronDown, Search, Tag } from "lucide-react";
 
-const FILTERS = ["Default", "Date", "Title", "Game"];
+const FILTERS = ["Default", "Date", "Title", "Category"];
 const PLATFORMS = ["All", "Twitch"];
+const CATEGORIES = ["Gaming", "ASMR"];
 const START_DATE = process.env.REACT_APP_START_DATE;
 
 const CustomDropdown = ({ value, options, onChange, label, icon: Icon }) => {
@@ -86,7 +87,7 @@ export default function Vods() {
   const [filterStartDate, setFilterStartDate] = useState(dayjs(START_DATE));
   const [filterEndDate, setFilterEndDate] = useState(dayjs());
   const [filterTitle, setFilterTitle] = useState("");
-  const [filterGame, setFilterGame] = useState("");
+  const [filterCategory, setFilterCategory] = useState(CATEGORIES[0]);
   const [platform, setPlatform] = useState(PLATFORMS[0]);
   const page = parseInt(query.get("page") || "1", 10);
   const limit = isMobile ? 10 : 20;
@@ -99,16 +100,23 @@ export default function Vods() {
       if (filterTitle) {
         filtered = filtered.filter(v => v.title.toLowerCase().includes(filterTitle.toLowerCase()));
       }
-      
+
+      if (filter === "Category") {
+        filtered = filtered.filter(v => {
+          const isGaming = (v.item_id || "").toUpperCase().includes("GAMING");
+          return filterCategory === "Gaming" ? isGaming : !isGaming;
+        });
+      }
+
       // Simple pagination
       const start = (page - 1) * limit;
       const end = start + limit;
-      
+
       setVods(filtered.slice(start, end));
       setTotalVods(filtered.length);
     };
     fetchVods();
-  }, [limit, page, filter, filterStartDate, filterEndDate, filterTitle, filterGame, platform]);
+  }, [limit, page, filter, filterStartDate, filterEndDate, filterTitle, filterCategory, platform]);
 
   const changeFilter = (value) => {
     setFilter(value);
@@ -137,13 +145,11 @@ export default function Vods() {
     []
   );
 
-  const handleGameChange = useMemo(
-    () =>
-      debounce((evt) => {
-        setFilterGame(evt.target.value);
-      }, 1000),
-    []
-  );
+  const changeCategory = (value) => {
+    setFilterCategory(value);
+    //reset page to 1 when category changes
+    navigate(`${location.pathname}?page=1`);
+  };
 
   const totalPages = Math.ceil(totalVods / limit);
   const isCdnAvailable = true;
@@ -210,18 +216,14 @@ export default function Vods() {
               />
             </div>
           )}
-          {filter === "Game" && (
-            <div className="flex-1 w-full relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search by Game..."
-                className="w-full pl-12 pr-4 py-3.5 bg-[#130b0e]/50 border border-pink-500/20 rounded-xl focus:outline-none focus:border-primary/50 text-pink-50 text-sm transition-colors shadow-inner"
-                onChange={handleGameChange}
-                onKeyDown={(e) => { if (e.key === "Enter") e.preventDefault(); }}
-                defaultValue={filterGame}
-              />
-            </div>
+          {filter === "Category" && (
+            <CustomDropdown
+              label="Category"
+              value={filterCategory}
+              options={CATEGORIES}
+              onChange={changeCategory}
+              icon={Tag}
+            />
           )}
           <CustomDropdown 
             label="Platform"

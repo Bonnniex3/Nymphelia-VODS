@@ -98,3 +98,13 @@ ins.adsbygoogle[data-ad-status="unfilled"] {
 .blob-secondary {
   background: radial-gradient(circle closest-side, rgba(236,72,153,0.15) 0%, rgba(236,72,153,0.05) 50%, rgba(0,0,0,0) 100%);
 }
+
+/* Pause background blob animations while any video is in fullscreen —
+   they don't render in native fullscreen but Chrome/Firefox still spend
+   GPU cycles ticking them, which can starve the video decoder. */
+body:has(.video-js.vjs-fullscreen) .bg-blob,
+body:has(:fullscreen) .bg-blob,
+body:has(:-webkit-full-screen) .bg-blob {
+  animation-play-state: paused;
+  will-change: auto;
+}

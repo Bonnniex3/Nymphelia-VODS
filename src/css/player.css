@@ -8,7 +8,38 @@
   padding: 0 6px;
   background: linear-gradient(to top, rgba(19,11,14,0.97), rgba(19,11,14,0.7));
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 0 0 16px 16px;
+  /* Promote to its own GPU layer so control-bar repaints don't invalidate the video layer */
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ── Fullscreen perf: drop expensive effects that starve the video decoder ──
+   backdrop-filter over a playing video in fullscreen forces per-frame
+   GPU re-composition of the whole video, which can cause the video to freeze
+   on mid-range GPUs. Keep the gradient, drop the blur. */
+.video-js.vjs-fullscreen .vjs-control-bar,
+.video-js:fullscreen .vjs-control-bar,
+.video-js:-webkit-full-screen .vjs-control-bar {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: linear-gradient(to top, rgba(19,11,14,0.98), rgba(19,11,14,0.55)) !important;
+  border-radius: 0 !important;
+}
+
+.video-js.vjs-fullscreen .vjs-big-play-button,
+.video-js:fullscreen .vjs-big-play-button,
+.video-js:-webkit-full-screen .vjs-big-play-button {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Hide the "Back to VODs" button when the player is in fullscreen */
+body:has(.video-js.vjs-fullscreen) .back-to-vods-btn,
+body:has(:fullscreen) .back-to-vods-btn,
+body:has(:-webkit-full-screen) .back-to-vods-btn {
+  display: none !important;
 }
 
 /* ── Progress bar — centered in its flex slot ── */

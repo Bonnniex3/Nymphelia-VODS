@@ -41,6 +41,29 @@ export const toSeconds = (hms) => {
 };
 
 /**
+ * Build a readable, shareable URL slug from a VOD record.
+ * Format: <sanitized-title>-YYYY-MM-DD-HHMM (UTC)
+ * e.g. "resident-evil-requiem-2026-04-04-0202"
+ */
+export const makeSlug = (vod) => {
+  const title = (vod.title || "")
+    .toLowerCase()
+    // strip emoji / pictographs / dingbats
+    .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "")
+    // non-letter/number → dash (unicode-aware so non-English titles survive)
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 60)
+    .replace(/-$/, "");
+  const d = new Date(vod.createdAt);
+  const pad = (n) => String(n).padStart(2, "0");
+  const date = `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
+  const hhmm = `${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}`;
+  return `${title}-${date}-${hhmm}`;
+};
+
+/**
  * seconds to HHMMSS
  */
 export const toHHMMSS = (secs) => {

@@ -1,6 +1,7 @@
 import { Menu, Button, Box } from "@mui/material";
 import OndemandVideo from "@mui/icons-material/OndemandVideo";
 import { Link } from "react-router-dom";
+import { makeSlug } from "../utils/helpers";
 
 export default function WatchMenu(props) {
   const { vod, anchorEl, setAnchorEl, isCdnAvailable } = props;
@@ -11,7 +12,7 @@ export default function WatchMenu(props) {
         <Box>
           <Button
             component={Link}
-            to={`/cdn/${vod.id}`}
+            to={`/vod/${makeSlug(vod)}`}
             color="primary"
             disabled={!isCdnAvailable}
             startIcon={<OndemandVideo />}

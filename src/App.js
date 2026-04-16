@@ -98,7 +98,7 @@ export default function App() {
                       </>
                     }
                   />
-                  <Route exact path="/cdn/:collectionId/:vodId" element={<CustomVod type="cdn" />} />
+                  <Route exact path="/vod/:slug" element={<CustomVod type="cdn" />} />
                 </Routes>
               </Suspense>
             </div>

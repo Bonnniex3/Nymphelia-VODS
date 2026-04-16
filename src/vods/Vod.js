@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat.js";
 import { Play } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { makeSlug } from "../utils/helpers";
 
 dayjs.extend(localizedFormat);
 
@@ -13,12 +14,14 @@ export default function Vod(props) {
   const navigate = useNavigate();
   const DEFAULT_THUMBNAIL = vod.thumbnail_url ? vod.thumbnail_url : Thumbnail;
 
+  const vodPath = `/vod/${makeSlug(vod)}`;
+
   const goToVod = (e) => {
     if (!isCdnAvailable) return;
     // Ignore clicks from chapters menu or its descendants
     if (e.target.closest("[data-no-nav]")) return;
     e.preventDefault();
-    navigate(`/cdn/${vod.id}`);
+    navigate(vodPath);
   };
 
   return (
@@ -70,7 +73,7 @@ export default function Vod(props) {
         )}
         <CustomWidthTooltip title={vod.title} placement="top">
           <Link
-            to={`/cdn/${vod.id}`}
+            to={vodPath}
             onClick={(e) => { if (!isCdnAvailable) e.preventDefault(); e.stopPropagation(); }}
             className="font-bold text-base leading-snug line-clamp-2 text-gray-100 group-hover:text-primary transition-colors duration-200"
           >

@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Box, IconButton, Menu, MenuItem, Typography, Tooltip } from "@mui/material";
 import CustomLink from "../utils/CustomLink";
 import humanize from "humanize-duration";
-import { toHMS } from "../utils/helpers";
+import { toHMS, makeSlug } from "../utils/helpers";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function Chapters(props) {
   const { vod, isCdnAvailable } = props;
   const [anchorEl, setAnchorEl] = useState(null);
-  const DEFAULT_VOD = isCdnAvailable ? `/cdn/${vod.id}` : `#`;
+  const DEFAULT_VOD = isCdnAvailable ? `/vod/${makeSlug(vod)}` : `#`;
 
   const handleClose = () => {
     setAnchorEl(null);

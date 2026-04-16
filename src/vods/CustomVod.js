@@ -1,24 +1,25 @@
 import { useEffect, useState, useRef } from "react";
 import { Box, Typography, Tooltip, useMediaQuery, IconButton, Collapse, Paper } from "@mui/material";
 import Loading from "../utils/Loading";
-import { useLocation, useParams } from "react-router-dom";
+import { Link as RouterLink, useLocation, useParams } from "react-router-dom";
 import DownloadIcon from "@mui/icons-material/Download";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CustomPlayer from "./CustomPlayer";
 import Chapters from "./VodChapters";
 import ExpandMore from "../utils/CustomExpandMore";
 import CustomWidthTooltip from "../utils/CustomToolTip";
-import { toHMS, convertTimestamp } from "../utils/helpers";
+import { toHMS, convertTimestamp, makeSlug } from "../utils/helpers";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MOCK_VODS from "./data/vods.json";
 
 export default function Vod(props) {
   const location = useLocation();
   const isPortrait = useMediaQuery("(orientation: portrait)");
-  const { collectionId, vodId } = useParams();
-  const fullVodId = collectionId ? `${collectionId}/${vodId}` : vodId;
+  const { slug } = useParams();
   const { type } = props;
   const [vod, setVod] = useState(undefined);
+  const [notFound, setNotFound] = useState(false);
   const [drive, setDrive] = useState(undefined);
   const [chapter, setChapter] = useState(undefined);
   const [showMenu, setShowMenu] = useState(true);
@@ -31,18 +32,15 @@ export default function Vod(props) {
   const playerRef = useRef(null);
 
   useEffect(() => {
-    const fetchVod = async () => {
-       const foundVod = MOCK_VODS.find(v => v.id === fullVodId);
-       if (foundVod) {
-          setVod(foundVod);
-          document.title = `${foundVod.title} - VOD`;
-       } else {
-           console.error("VOD not found");
-       }
-    };
-    fetchVod();
-    return;
-  }, [fullVodId]);
+    const foundVod = MOCK_VODS.find((v) => makeSlug(v) === slug);
+    if (foundVod) {
+      setVod(foundVod);
+      setNotFound(false);
+      document.title = `${foundVod.title} - VOD`;
+    } else {
+      setNotFound(true);
+    }
+  }, [slug]);
 
   useEffect(() => {
     if (!vod) return;
@@ -86,12 +84,48 @@ export default function Vod(props) {
     navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}?t=${toHMS(currentTime)}`);
   };
 
+  if (notFound) {
+    return (
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", gap: 2, p: 4, textAlign: "center" }}>
+        <Typography variant="h5" sx={{ color: "#fce7f3" }}>VOD not found</Typography>
+        <Typography variant="body2" sx={{ color: "#9ca3af" }}>This link may be broken or the VOD has been removed.</Typography>
+        <RouterLink to="/" style={{ color: "#ec4899", fontWeight: 600, textDecoration: "underline" }}>Back to VODs</RouterLink>
+      </Box>
+    );
+  }
+
   if (vod === undefined || drive === undefined) return <Loading />;
 
   return (
     <Box sx={{ height: "100%", width: "100%" }}>
       <Box sx={{ display: "flex", flexDirection: isPortrait ? "column" : "row", height: "100%", width: "100%" }}>
         <Box sx={{ display: "flex", height: "100%", width: "100%", flexDirection: "column", alignItems: "flex-start", minWidth: 0, overflow: "hidden", position: "relative" }}>
+          <Tooltip title="Back to VODs">
+            <IconButton
+              component={RouterLink}
+              to="/"
+              aria-label="Back to VODs"
+              className="back-to-vods-btn"
+              sx={{
+                position: "absolute",
+                top: 12,
+                left: 12,
+                zIndex: 10,
+                bgcolor: "rgba(19,11,14,0.72)",
+                color: "#fce7f3",
+                border: "1px solid rgba(236,72,153,0.35)",
+                backdropFilter: "blur(6px)",
+                transition: "background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease",
+                "&:hover": {
+                  bgcolor: "rgba(236,72,153,0.25)",
+                  borderColor: "#ec4899",
+                  transform: "translateX(-2px)",
+                },
+              }}
+            >
+              <ArrowBackIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
           <CustomPlayer playerRef={playerRef} setCurrentTime={setCurrentTime} setPlaying={setPlaying} delay={delay} setDelay={setDelay} type={type} vod={vod} timestamp={timestamp} />
           <Box sx={{ position: "absolute", bottom: 0, left: "50%" }}>
             <Tooltip title={showMenu ? "Collapse" : "Expand"}>
