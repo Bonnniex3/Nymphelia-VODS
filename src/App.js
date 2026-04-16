@@ -5,15 +5,13 @@ import { CssBaseline } from "@mui/material";
 import Loading from "./utils/Loading";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { motion } from "framer-motion";
 
 const Vods = lazy(() => import("./vods/Vods"));
 const CustomVod = lazy(() => import("./vods/CustomVod"));
 const Navbar = lazy(() => import("./navbar/Navbar"));
 const NotFound = lazy(() => import("./utils/NotFound"));
 
-export default function App() {
-  let darkTheme = createTheme({
+let darkTheme = createTheme({
     palette: {
       mode: "dark",
       background: {
@@ -59,8 +57,9 @@ export default function App() {
     },
   });
 
-  darkTheme = responsiveFontSizes(darkTheme);
+darkTheme = responsiveFontSizes(darkTheme);
 
+export default function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -69,21 +68,9 @@ export default function App() {
           <div className="absolute inset-0 overflow-hidden flex flex-col bg-[#130b0e] text-pink-50">
             {/* Animated Background Layers */}
             <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-               <motion.div 
-                 className="bg-blob blob-primary w-[800px] h-[800px] -top-1/4 -left-1/4 rounded-full"
-                 animate={{ rotate: 360 }}
-                 transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
-               />
-               <motion.div 
-                 className="bg-blob blob-secondary w-[600px] h-[600px] top-1/2 -right-1/4 rounded-full"
-                 animate={{ rotate: -360 }}
-                 transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-               />
-               <motion.div 
-                 className="bg-blob blob-primary w-[700px] h-[700px] -bottom-1/4 left-1/3 rounded-full opacity-40"
-                 animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-               />
+               <div className="bg-blob blob-primary w-[800px] h-[800px] -top-1/4 -left-1/4 rounded-full" />
+               <div className="bg-blob blob-secondary w-[600px] h-[600px] top-1/2 -right-1/4 rounded-full" />
+               <div className="bg-blob blob-primary w-[700px] h-[700px] -bottom-1/4 left-1/3 rounded-full opacity-40" />
             </div>
 
             {/* Main Content App Context */}

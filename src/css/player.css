@@ -1,0 +1,211 @@
+/* ── Custom Video.js Player Skin ── */
+
+/* ── Control bar: single row, at bottom ── */
+.video-js .vjs-control-bar {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 6px;
+  background: linear-gradient(to top, rgba(19,11,14,0.97), rgba(19,11,14,0.7));
+  backdrop-filter: blur(12px);
+  border-radius: 0 0 16px 16px;
+}
+
+/* ── Progress bar — centered in its flex slot ── */
+.video-js .vjs-progress-control.vjs-control {
+  flex: 1 1 auto;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  min-width: 4em;
+  cursor: pointer;
+}
+
+.video-js .vjs-progress-holder {
+  height: 4px;
+  margin: 0;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.15);
+  transition: height 0.15s ease;
+  flex: 1;
+  position: relative;
+}
+
+.video-js .vjs-progress-control:hover .vjs-progress-holder,
+.video-js .vjs-progress-control:focus-within .vjs-progress-holder {
+  height: 8px;
+}
+
+.video-js .vjs-play-progress {
+  background: linear-gradient(to right, #ec4899, #a855f7) !important;
+  border-radius: 99px;
+}
+
+/* Kill Video.js default scrubber handle */
+.video-js .vjs-play-progress::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Our custom scrubber thumb (on hover) */
+.video-js .vjs-play-progress::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(236,72,153,0.8);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.video-js .vjs-progress-control:hover .vjs-play-progress::after {
+  opacity: 1;
+}
+
+.video-js .vjs-load-progress,
+.video-js .vjs-load-progress div {
+  border-radius: 99px;
+  background: rgba(255,255,255,0.18);
+}
+
+/* ── Time tooltip ── */
+.video-js .vjs-time-tooltip {
+  background: rgba(19,11,14,0.92) !important;
+  border: 1px solid rgba(236,72,153,0.4);
+  border-radius: 8px;
+  color: #fce7f3;
+  font-size: 12px;
+  padding: 3px 8px;
+}
+
+/* ── Buttons (play, mute, fullscreen…) ── */
+.video-js .vjs-button > .vjs-icon-placeholder::before {
+  line-height: 48px;
+  font-size: 1.5em;
+  color: #fce7f3;
+}
+
+.video-js .vjs-control:hover .vjs-icon-placeholder::before {
+  color: #ec4899;
+  text-shadow: 0 0 8px rgba(236,72,153,0.6);
+}
+
+/* ── Time display ── */
+.video-js .vjs-time-control {
+  color: #fce7f3;
+  font-size: 13px;
+  padding: 0 4px;
+  min-width: 0;
+  line-height: 48px;
+}
+
+.video-js .vjs-duration,
+.video-js .vjs-time-divider {
+  display: block;
+}
+
+/* ── Volume ── */
+.video-js .vjs-volume-level {
+  background: linear-gradient(to right, #ec4899, #a855f7) !important;
+  border-radius: 99px;
+}
+
+.video-js .vjs-volume-bar {
+  border-radius: 99px;
+  background-color: rgba(255,255,255,0.15);
+}
+
+/* Nuke all default volume handles / triangles / dots */
+.video-js .vjs-volume-level::before,
+.video-js .vjs-volume-level::after,
+.video-js .vjs-volume-bar::before,
+.video-js .vjs-volume-bar::after,
+.video-js .vjs-volume-control::before,
+.video-js .vjs-volume-control::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+
+.video-js .vjs-volume-control .vjs-mouse-display {
+  display: none !important;
+}
+
+/* ── Big play button ── */
+.video-js .vjs-big-play-button {
+  width: 68px !important;
+  height: 68px !important;
+  border-radius: 50% !important;
+  border: 2px solid rgba(236,72,153,0.5) !important;
+  background: rgba(19,11,14,0.7) !important;
+  backdrop-filter: blur(8px);
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  line-height: 68px !important;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.video-js .vjs-big-play-button:hover,
+.video-js .vjs-big-play-button:focus {
+  background: rgba(236,72,153,0.25) !important;
+  border-color: #ec4899 !important;
+}
+
+.video-js .vjs-big-play-button .vjs-icon-placeholder::before {
+  font-size: 2em;
+  line-height: 68px;
+  color: #fce7f3;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .video-js .vjs-control-bar {
+    height: 52px;
+    padding: 0 4px;
+  }
+
+  .video-js .vjs-progress-control.vjs-control {
+    height: 52px;
+  }
+
+  .video-js .vjs-progress-holder {
+    height: 5px;
+  }
+
+  .video-js .vjs-progress-control:hover .vjs-progress-holder {
+    height: 10px;
+  }
+
+  .video-js .vjs-play-progress::after {
+    opacity: 1 !important;
+    width: 16px;
+    height: 16px;
+    right: -8px;
+  }
+
+  .video-js .vjs-button > .vjs-icon-placeholder::before {
+    line-height: 52px;
+    font-size: 1.7em;
+  }
+
+  .video-js .vjs-control {
+    min-width: 44px;
+  }
+
+  .video-js .vjs-time-control {
+    line-height: 52px;
+    font-size: 12px;
+  }
+
+  .video-js .vjs-volume-panel {
+    display: none;
+  }
+}

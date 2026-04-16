@@ -124,7 +124,7 @@ export default function Vods() {
 
   const handleSubmit = (e) => {
     const value = e.target.value;
-    if (e.which === 13 && !isNaN(value) && value > 0) {
+    if (e.key === "Enter" && !isNaN(value) && value > 0) {
       navigate(`${location.pathname}?page=${value}`);
     }
   };
@@ -200,24 +200,26 @@ export default function Vods() {
           {filter === "Title" && (
             <div className="flex-1 w-full relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Search by Title..."
                 className="w-full pl-12 pr-4 py-3.5 bg-[#130b0e]/50 border border-pink-500/20 rounded-xl focus:outline-none focus:border-primary/50 text-pink-50 text-sm transition-colors shadow-inner"
-                onChange={handleTitleChange} 
-                defaultValue={filterTitle} 
+                onChange={handleTitleChange}
+                onKeyDown={(e) => { if (e.key === "Enter") e.preventDefault(); }}
+                defaultValue={filterTitle}
               />
             </div>
           )}
           {filter === "Game" && (
             <div className="flex-1 w-full relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Search by Game..."
                 className="w-full pl-12 pr-4 py-3.5 bg-[#130b0e]/50 border border-pink-500/20 rounded-xl focus:outline-none focus:border-primary/50 text-pink-50 text-sm transition-colors shadow-inner"
-                onChange={handleGameChange} 
-                defaultValue={filterGame} 
+                onChange={handleGameChange}
+                onKeyDown={(e) => { if (e.key === "Enter") e.preventDefault(); }}
+                defaultValue={filterGame}
               />
             </div>
           )}

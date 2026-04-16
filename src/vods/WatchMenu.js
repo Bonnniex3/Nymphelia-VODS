@@ -6,7 +6,7 @@ export default function WatchMenu(props) {
   const { vod, anchorEl, setAnchorEl, isCdnAvailable } = props;
 
   return (
-    <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
+    <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} disableScrollLock>
       <Box sx={{ pl: 1 }}>
         <Box>
           <Button
