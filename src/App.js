@@ -5,6 +5,7 @@ import { CssBaseline } from "@mui/material";
 import Loading from "./utils/Loading";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Analytics } from "@vercel/analytics/react";
 
 const Vods = lazy(() => import("./vods/Vods"));
 const CustomVod = lazy(() => import("./vods/CustomVod"));
@@ -105,6 +106,7 @@ export default function App() {
           </div>
         </LocalizationProvider>
       </BrowserRouter>
+      <Analytics />
     </ThemeProvider>
   );
 }
