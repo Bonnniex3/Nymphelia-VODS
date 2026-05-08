@@ -2,6 +2,17 @@
   "outputDirectory": "prod",
   "rewrites": [
     {
+      "source": "/vod/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "(?i).*(discordbot|twitterbot|slackbot|facebookexternalhit|facebot|linkedinbot|telegrambot|whatsapp|skypebot|embedly|redditbot|googlebot|bingbot|applebot|yandexbot|duckduckbot|baiduspider|ia_archiver|preview).*"
+        }
+      ],
+      "destination": "/api/embed?slug=:slug"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

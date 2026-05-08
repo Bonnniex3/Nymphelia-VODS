@@ -8,10 +8,19 @@ import { toSeconds } from "../utils/helpers";
 const CDN_BASE = "https://archive.org/download";
 
 export default function Player(props) {
-  const { playerRef, setCurrentTime, setPlaying, type, vod, timestamp, delay, setDelay } = props;
+  const { playerRef, setCurrentTime, setPlaying, type, vod, timestamp, delay, setDelay, clipStart, clipEnd } = props;
   const timeUpdateRef = useRef(null);
   const [source, setSource] = useState(undefined);
   const [fileError, setFileError] = useState(undefined);
+  const isClipMode = clipStart != null && clipEnd != null && clipStart < clipEnd;
+  const clipModeRef = useRef(isClipMode);
+  const clipStartRef = useRef(clipStart);
+  const clipEndRef = useRef(clipEnd);
+  useEffect(() => {
+    clipModeRef.current = isClipMode;
+    clipStartRef.current = clipStart;
+    clipEndRef.current = clipEnd;
+  }, [isClipMode, clipStart, clipEnd]);
   const videoJsOptions = {
     autoplay: true,
     controls: true,
@@ -53,8 +62,11 @@ export default function Player(props) {
 
     // Restore last position after metadata is loaded
     player.on("loadedmetadata", function () {
-      // If a timestamp is provided, prefer it, else restore from localStorage
-      if (timestamp) {
+      // Clip mode: always seek to clipStart and ignore saved position.
+      if (clipModeRef.current) {
+        player.currentTime(clipStartRef.current);
+      } else if (timestamp) {
+        // If a timestamp is provided, prefer it, else restore from localStorage
         player.currentTime(timestamp);
       } else {
         const savedPosition = localStorage.getItem(`video-position-${vod.id}`);
@@ -70,6 +82,14 @@ export default function Player(props) {
     // Save position every 5 seconds without spamming storage
     let lastSavedTime = 0;
     player.on("timeupdate", () => {
+      // Clip mode: enforce end boundary and skip saving progress.
+      if (clipModeRef.current) {
+        if (clipEndRef.current != null && player.currentTime() >= clipEndRef.current) {
+          player.pause();
+          player.currentTime(clipEndRef.current);
+        }
+        return;
+      }
       const currentTime = Math.floor(player.currentTime());
       if (currentTime > 0 && currentTime % 5 === 0 && currentTime !== lastSavedTime) {
         lastSavedTime = currentTime;
@@ -84,7 +104,7 @@ export default function Player(props) {
     });
 
     player.on("pause", () => {
-      savePosition(player);
+      if (!clipModeRef.current) savePosition(player);
       clearTimeUpdate();
       setPlaying({ playing: false });
     });
@@ -162,10 +182,11 @@ export default function Player(props) {
     set();
   }, [source, playerRef, vod, setDelay]);
 
-  // On unmount, save position
+  // On unmount, save position (skip in clip mode so a clip viewing doesn't
+  // overwrite the user's main watch progress for this VOD).
   useEffect(() => {
     return () => {
-      if (playerRef.current) {
+      if (playerRef.current && !clipModeRef.current) {
         savePosition(playerRef.current);
       }
     };
