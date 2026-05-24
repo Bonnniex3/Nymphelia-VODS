@@ -2,7 +2,7 @@
 
 A fan-made VOD archive for the VTuber [Nymphelia](https://twitch.tv/nymphelia). Videos are stored on the [Internet Archive](https://archive.org/) and streamed through a custom Video.js player so the watching experience stays under our control.
 
-**Archive site:** <https://nymphelia.com>
+**Archive site:** <https://vods.nymphelia.co>
 **Watch live:** <https://twitch.tv/nymphelia>
 
 ---
