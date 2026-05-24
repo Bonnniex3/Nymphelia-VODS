@@ -1,76 +1,83 @@
-# Getting Started with Create React App
+# NympheliaVOD
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A fan-made VOD archive for the VTuber [Nymphelia](https://nymphelia.com). Videos are stored on the [Internet Archive](https://archive.org/) and streamed through a custom Video.js player so the watching experience stays under our control.
 
-## Available Scripts
+**Live site:** <https://nymphelia.com>
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## What it does
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Indexes every VOD across Nymphelia's Internet Archive collections (gaming, ASMR, general archive).
+- Auto-generates titles, dates, and thumbnails by parsing filenames at build time.
+- Serves each VOD through a custom Video.js player with hotkeys, fullscreen polish, and direct deep-linkable URLs (`/vod/:slug`).
+- Provides search and category filtering on the VOD grid.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Tech stack
 
-### `npm test`
+- **React 19** + **Create React App** (via `react-app-rewired`)
+- **MUI v7** for components and theming
+- **Tailwind CSS v3** for layout utilities
+- **Video.js 8** with `videojs-hotkeys` for playback
+- **React Router v7** for routing
+- **Framer Motion** for transitions
+- **Vercel Analytics** for traffic insights
+- Hosted on **Vercel**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## How it works
 
-### `npm run build`
+Videos are hosted on the Internet Archive at `archive.org/download/{collectionId}/{vodId}.mp4`. The build script (`scripts/fetch-vods.js`) hits the IA metadata API for each configured collection, parses date/title out of the filename, downloads thumbnails into `public/thumbnails/`, and writes a single `src/vods/data/vods.json` manifest the frontend reads.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The player page (`/vod/:slug`) embeds the IA MP4 directly into a Video.js instance — no IA iframe — so styling, hotkeys, and UX are fully ours.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Project layout
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+public/              static assets + thumbnails (generated)
+scripts/
+  fetch-vods.js      pulls IA metadata + thumbnails, writes vods.json
+src/
+  App.js             routes + MUI theme + animated background
+  navbar/            top nav + drawer
+  vods/
+    Vods.js          VOD grid (search, filters)
+    CustomVod.js     player page
+    VideoJS.js       Video.js wrapper
+    CustomPlayer.js  player UI overlays
+    data/vods.json   generated VOD index
+  utils/             shared helpers + UI bits
+```
 
-### `npm run eject`
+## Running locally
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+npm install
+npm run fetch-vods   # populate src/vods/data/vods.json + public/thumbnails
+npm start            # dev server on http://localhost:3000
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Available scripts
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+| Script | What it does |
+| --- | --- |
+| `npm start` | Dev server (react-app-rewired) |
+| `npm run fetch-vods` | Re-fetches IA metadata and thumbnails |
+| `npm run build` | Runs `fetch-vods`, builds the app, renames `build/` → `prod/` |
+| `npm test` | Runs the test suite |
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Deployment
 
-## Learn More
+The site deploys to **Vercel**. Because `npm run build` renames the output folder, Vercel must be configured with **Output Directory: `prod`**. Redeploys are triggered via a Vercel Deploy Hook whenever the VOD index needs refreshing.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Adding a new IA collection
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Edit the `ITEM_IDS` array at the top of [scripts/fetch-vods.js](scripts/fetch-vods.js), then re-run `npm run fetch-vods`. Filenames are expected to follow one of the patterns the parser already understands (`[M-D-YY] title.mp4`, `twitch_nymphelia_YYYY-MM-DD HH-MM-SS_title.mp4`, etc.).
 
-### Code Splitting
+## Credits
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- VODs and likeness: **Nymphelia**
+- Site built and maintained by **[Bonnniex3](https://github.com/Bonnniex3)**
+- Inspired by other VTuber/streamer VOD archive projects
+- [Twemoji](https://twemoji.twitter.com) graphics — licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-### Twemoji
-
-[Twemoji graphics made by Twitter and other contributors](https://twemoji.twitter.com)
-
-[Licensed under CC-BY 4.0](https://creativecommons.org/licenses/by/4.0)
+This is an unofficial fan project and is not affiliated with Nymphelia.
