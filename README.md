@@ -1,8 +1,9 @@
 # NympheliaVOD
 
-A fan-made VOD archive for the VTuber [Nymphelia](https://nymphelia.com). Videos are stored on the [Internet Archive](https://archive.org/) and streamed through a custom Video.js player so the watching experience stays under our control.
+A fan-made VOD archive for the VTuber [Nymphelia](https://twitch.tv/nymphelia). Videos are stored on the [Internet Archive](https://archive.org/) and streamed through a custom Video.js player so the watching experience stays under our control.
 
-**Live site:** <https://nymphelia.com>
+**Archive site:** <https://nymphelia.com>
+**Watch live:** <https://twitch.tv/nymphelia>
 
 ---
 
