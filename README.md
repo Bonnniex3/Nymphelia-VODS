@@ -78,7 +78,7 @@ Edit the `ITEM_IDS` array at the top of [scripts/fetch-vods.js](scripts/fetch-vo
 
 - VODs and likeness: **Nymphelia**
 - Site built and maintained by **[Bonnniex3](https://github.com/Bonnniex3)**
-- Inspired by other VTuber/streamer VOD archive projects
+- Inspired by [xqc.wtf](https://xqc.wtf) and other streamer VOD archive projects
 - [Twemoji](https://twemoji.twitter.com) graphics — licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0)
 
 This is an unofficial fan project and is not affiliated with Nymphelia.
