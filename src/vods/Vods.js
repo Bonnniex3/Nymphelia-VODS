@@ -5,6 +5,7 @@ import SimpleBar from "simplebar-react";
 import Footer from "../utils/Footer";
 import Loading from "../utils/Loading";
 import Vod from "./Vod";
+import FeaturedHero from "./FeaturedHero";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -92,10 +93,26 @@ export default function Vods() {
   const page = parseInt(query.get("page") || "1", 10);
   const limit = isMobile ? 10 : 20;
 
+  const featuredVod = useMemo(() => MOCK_VODS.find((v) => v.featured) || null, []);
+  const archiveVods = useMemo(() => MOCK_VODS.filter((v) => !v.featured), []);
+  const isHome = location.pathname === "/";
+  const vodsSectionRef = useRef(null);
+  const scrollToVods = () => {
+    const target = vodsSectionRef.current;
+    if (!target) return;
+    const scrollEl = target.closest(".simplebar-content-wrapper");
+    if (!scrollEl) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    const top = scrollEl.scrollTop + target.getBoundingClientRect().top - scrollEl.getBoundingClientRect().top;
+    scrollEl.scrollTo({ top, behavior: "smooth" });
+  };
+
   useEffect(() => {
     const fetchVods = async () => {
       // Client-side filtering simulation
-      let filtered = [...MOCK_VODS];
+      let filtered = [...archiveVods];
 
       if (filterTitle) {
         filtered = filtered.filter(v => v.title.toLowerCase().includes(filterTitle.toLowerCase()));
@@ -116,7 +133,7 @@ export default function Vods() {
       setTotalVods(filtered.length);
     };
     fetchVods();
-  }, [limit, page, filter, filterStartDate, filterEndDate, filterTitle, filterCategory, platform]);
+  }, [limit, page, filter, filterStartDate, filterEndDate, filterTitle, filterCategory, platform, archiveVods]);
 
   const changeFilter = (value) => {
     setFilter(value);
@@ -156,7 +173,8 @@ export default function Vods() {
 
   return (
     <SimpleBar style={{ minHeight: 0, height: "100%" }}>
-      <div className="p-4">
+      {isHome && featuredVod && <FeaturedHero vod={featuredVod} onScrollDown={scrollToVods} />}
+      <div className="p-4" ref={vodsSectionRef}>
         <div className="mt-2 text-center">
           {/*
           <ErrorBoundary>

@@ -1,11 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 
+// Featured items shown in the homepage spotlight hero.
+// Map of IA identifier -> custom thumbnail path (served from /public), or null to use the IA thumbnail.
+// Custom thumbnails must live in /public (committed) because /public/thumbnails is gitignored and
+// regenerated on every build, so a path there wouldn't survive a fresh deploy.
+const FEATURED_ITEMS = {
+    '3-dio-asmr-do-you-like-a-pretty-girls-feet-rubs-no-talkingpanting': '/featured-thumbnail.png'
+};
 const ITEM_IDS = [
     'NYMPHELIA-2025-ASMR',
     'NYMPHELIA-GAMING26',
     'NYMPHELIA-2026-ASMR',
-    'Nymphelia-2025-Archive'
+    'Nymphelia-2025-Archive',
+    ...Object.keys(FEATURED_ITEMS)
 ];
 const OUTPUT_FILE = path.join(__dirname, '../src/vods/data/vods.json');
 const THUMBNAILS_DIR = path.join(__dirname, '../public/thumbnails');
@@ -181,11 +189,12 @@ async function fetchVods() {
                 return {
                     id: `${ITEM_ID}/${file.name}`, // Create a composite ID to avoid collisions across items
                     item_id: ITEM_ID,
+                    featured: ITEM_ID in FEATURED_ITEMS,
                     file_name: file.name,
                     title: title || file.name,
                     createdAt: date,
                     duration: formatDuration(file.length || file.duration), 
-                    thumbnail_url: localThumbnailUrl,
+                    thumbnail_url: FEATURED_ITEMS[ITEM_ID] || localThumbnailUrl,
                     video_url: videoUrl,
                     drive: [], // Keep structure compatible
                     youtube: [],
