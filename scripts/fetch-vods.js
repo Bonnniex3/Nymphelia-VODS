@@ -12,6 +12,7 @@ const ITEM_IDS = [
     'NYMPHELIA-2025-ASMR',
     'NYMPHELIA-GAMING26',
     'NYMPHELIA-2026-ASMR',
+    'NYMPHELIA-2026-ASMR-2',
     'Nymphelia-2025-Archive',
     ...Object.keys(FEATURED_ITEMS)
 ];
