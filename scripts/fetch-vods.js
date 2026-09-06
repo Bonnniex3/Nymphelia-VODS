@@ -54,7 +54,10 @@ function parseDateAndTitle(file) {
 
     // Pattern 1: [M-D-YY] or [MM-DD-YY] maybe with something like (2)
     // e.g. [2-3-26] nymphelia - ... or [12-19-25](2) nymphelia - ...
-    let m = filename.match(/^\[(\d{1,2})-(\d{1,2})-(\d{2,4})\](?:\(\d+\))?\s*(?:nymphelia\s*-\s*)?(.*?)(\.mp4|\.mkv|\.webm)$/i);
+    // ny[ma]phelia covers the ASMR channel (nymphelia) and the gaming alt
+    // (nyaphelia) - one letter apart. Without the alt, every gaming VOD
+    // renders with a redundant "nyaphelia - " in front of its title.
+    let m = filename.match(/^\[(\d{1,2})-(\d{1,2})-(\d{2,4})\](?:\(\d+\))?\s*(?:ny[ma]phelia\s*-\s*)?(.*?)(\.mp4|\.mkv|\.webm)$/i);
     if (m) {
         let [_, month, day, year, restTitle] = m;
         if (year.length === 2) year = '20' + year;
