@@ -24,7 +24,7 @@ export default function Chapters(props) {
     <Box sx={{ pr: 1 }}>
       <Tooltip title={chapter.name ?? "Chapter 1"}>
         <IconButton onClick={handleClick}>
-          <img alt="" src={getImage(chapter.image)} style={{ width: "40px", height: "53px" }} />
+          <img alt="" loading="lazy" decoding="async" width={40} height={53} src={getImage(chapter.image)} style={{ width: "40px", height: "53px" }} />
         </IconButton>
       </Tooltip>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose} sx={{ maxWidth: "280px", maxHeight: "400px" }}>
@@ -33,7 +33,7 @@ export default function Chapters(props) {
             <MenuItem onClick={() => handleChapterClick(data)} key={data.gameId + data.start} selected={data.start === chapter.start}>
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ mr: 1 }}>
-                  <img alt="" src={getImage(data.image)} style={{ width: "40px", height: "53px" }} />
+                  <img alt="" loading="lazy" decoding="async" width={40} height={53} src={getImage(data.image)} style={{ width: "40px", height: "53px" }} />
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <Typography color="inherit" variant="body2" noWrap>{`${data.name ?? "Chapter 1"}`}</Typography>

@@ -23,6 +23,8 @@ export default function FeaturedHero({ vod, onScrollDown }) {
     >
       <img
         src={poster}
+        fetchPriority="high"
+        decoding="async"
         alt=""
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 transform-gpu"
       />
