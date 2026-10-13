@@ -16,6 +16,12 @@ const ITEM_IDS = [
     'Nymphelia-2025-Archive',
     ...Object.keys(FEATURED_ITEMS)
 ];
+// Archive "type" shown on cards and in the filters. The first rule whose pattern matches the
+// item id wins; items matching none fall back to the site default (gaming for *GAMING* ids,
+// otherwise stream).
+const CATEGORY_RULES = [
+    [/asmr/i, 'asmr'],
+];
 const OUTPUT_FILE = path.join(__dirname, '../src/vods/data/vods.json');
 const THUMBNAILS_DIR = path.join(__dirname, '../public/thumbnails');
 
@@ -132,6 +138,15 @@ function formatDuration(seconds) {
 
 async function fetchVods() {
     let allVods = [];
+    // Last good catalog: if an item can't be read this run, its VODs are kept from here
+    // instead of disappearing from the site until the next successful build.
+    let previous = [];
+    try {
+        previous = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf8'));
+    } catch {
+        // first run: no catalog yet
+    }
+    const failed = [];
 
     for (const ITEM_ID of ITEM_IDS) {
         console.log(`Fetching metadata for ${ITEM_ID}...`);
@@ -142,6 +157,7 @@ async function fetchVods() {
             const response = await fetch(METADATA_URL);
             if (!response.ok) {
                 console.error(`HTTP error! status: ${response.status} for ${ITEM_ID}`);
+                failed.push(ITEM_ID);
                 continue;
             }
             
@@ -150,6 +166,7 @@ async function fetchVods() {
             
             if (!files) {
                 console.error(`No files found in metadata for ${ITEM_ID}.`);
+                failed.push(ITEM_ID);
                 continue;
             }
 
@@ -193,12 +210,14 @@ async function fetchVods() {
                 return {
                     id: `${ITEM_ID}/${file.name}`, // Create a composite ID to avoid collisions across items
                     item_id: ITEM_ID,
+                    category: CATEGORY_RULES.find(([re]) => re.test(ITEM_ID))?.[1],
                     featured: ITEM_ID in FEATURED_ITEMS,
                     file_name: file.name,
                     title: title || file.name,
                     createdAt: date,
                     duration: formatDuration(file.length || file.duration), 
                     thumbnail_url: FEATURED_ITEMS[ITEM_ID] || localThumbnailUrl,
+                    thumbnail_source: thumbnailUrl,
                     video_url: videoUrl,
                     drive: [], // Keep structure compatible
                     youtube: [],
@@ -212,7 +231,20 @@ async function fetchVods() {
 
         } catch (error) {
             console.error(`Error fetching VODs for ${ITEM_ID}:`, error);
+            failed.push(ITEM_ID);
         }
+    }
+
+    for (const ITEM_ID of failed) {
+        const kept = previous.filter((v) => v.item_id === ITEM_ID);
+        for (const v of kept) {
+            // Generated thumbnails aren't committed, so fetch them again for kept VODs.
+            if (v.thumbnail_source && String(v.thumbnail_url).startsWith('/thumbnails/')) {
+                v.thumbnail_url = await downloadThumbnail(v.thumbnail_source, path.basename(v.thumbnail_url));
+            }
+        }
+        if (kept.length) console.warn(`Keeping ${kept.length} VOD(s) for ${ITEM_ID} from the last catalog.`);
+        allVods = allVods.concat(kept);
     }
 
     try {

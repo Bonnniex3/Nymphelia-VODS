@@ -1,0 +1,54 @@
+{
+  "repo": "Nymphelia-VODS",
+  "pkg": "nymphelia-vods",
+  "name": "Nymphelia",
+  "handle": "nymphelia",
+  "kana": "ニンフェリア",
+  "initials": "NYM",
+  "tagline": "asmrtist ✦ streamer",
+  "site": "vods.nymphelia.co",
+  "socials": {
+    "twitch": "https://www.twitch.tv/nymphelia",
+    "x": "https://x.com/nymphelia_",
+    "youtube": "https://www.youtube.com/@nympheliach",
+    "discord": "https://discord.gg/nymphelia"
+  },
+  "palette": {
+    "void": "#0a0408",
+    "ink": "#12070e",
+    "panel": "#1a0c15",
+    "panel2": "#23111d",
+    "panel3": "#311829",
+    "cream": "#fff7fa",
+    "blush": "#fbcfe8",
+    "petal": "#f78fc4",
+    "neon": "#ff6fb5",
+    "rose": "#c25588",
+    "sky": "#c3a6ff",
+    "lilac": "#8f7ae6",
+    "mute": "#ae8fa0",
+    "dim": "#765867"
+  },
+  "vercel": {
+    "framework": "vite",
+    "buildCommand": "npm run build"
+  },
+  "patches": {
+    "src/home/ProfileCard.jsx": [
+      [
+        "♡ vtuber\n",
+        "♡ asmrtist\n"
+      ],
+      [
+        "<Tag tone=\"sky\">vtuber</Tag>",
+        "<Tag tone=\"sky\">asmrtist</Tag>"
+      ]
+    ],
+    "scripts/brand/og.html": [
+      [
+        ">vtuber ✦ streamer<",
+        ">asmrtist ✦ streamer<"
+      ]
+    ]
+  }
+}

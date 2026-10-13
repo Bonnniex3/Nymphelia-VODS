@@ -1,0 +1,412 @@
+@import "tailwindcss";
+
+/* ────────────────────────────────────────────────────────────────────────────
+   NYMPHELIA.EXE — design tokens
+   Her palette (petal pink, blush, rose, sky-blue eyes) on a near-black plum
+   "monitor glass" base. Every colour/font utility below comes from here.
+   ──────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* surfaces, darkest → lightest */
+  --color-void: #0a0408;
+  --color-ink: #12070e;
+  --color-panel: #1a0c15;
+  --color-panel-2: #23111d;
+  --color-panel-3: #311829;
+  --color-line: rgb(251 207 232 / 0.11);
+  --color-line-strong: rgb(251 207 232 / 0.22);
+
+  /* Nymphelia palette */
+  --color-cream: #fff7fa;
+  --color-blush: #fbcfe8;
+  --color-petal: #f78fc4;
+  --color-neon: #ff6fb5;
+  --color-rose: #c25588;
+  --color-sky: #c3a6ff;
+  --color-lilac: #8f7ae6;
+  --color-mute: #ae8fa0;
+  --color-dim: #765867;
+
+  --font-display: "Unbounded Variable", "Unbounded", system-ui, sans-serif;
+  --font-dot: "DotGothic16", ui-monospace, monospace;
+  --font-sans: "M PLUS Rounded 1c", system-ui, sans-serif;
+
+  --breakpoint-3xl: 120rem;
+  --breakpoint-4xl: 150rem;
+
+  --ease-snap: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-blink: blink 1.1s steps(1, end) infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-twinkle: twinkle 2.6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-spin-slow: spin 16s linear infinite;
+  --animate-holo: holo-pan 8s linear infinite;
+  --animate-boot: boot 1.4s var(--ease-snap) infinite;
+  --animate-static: static-shift 0.6s steps(6, end) infinite;
+  --animate-roll: roll 5s linear infinite;
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.25; transform: scale(0.7) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(45deg); }
+  }
+  @keyframes shimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+  }
+  @keyframes holo-pan {
+    from { background-position: 0% 50%; }
+    to { background-position: 200% 50%; }
+  }
+  @keyframes static-shift {
+    0% { background-position: 0 0; }
+    100% { background-position: 180px 96px; }
+  }
+  @keyframes roll {
+    from { transform: translateY(-120%); }
+    to { transform: translateY(520%); }
+  }
+  @keyframes boot {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+  }
+}
+
+:root {
+  --holo: linear-gradient(100deg, #f78fc4 0%, #fbcfe8 18%, #c3a6ff 38%, #8f7ae6 56%, #ff6fb5 76%, #f78fc4 100%);
+  --topbar-h: 3.5rem;
+  --gutter: clamp(1rem, 2.4vw, 3rem);
+}
+
+@property --holo-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes holo-spin {
+  to { --holo-angle: 360deg; }
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-void);
+    scrollbar-color: var(--color-rose) var(--color-ink);
+    scrollbar-width: thin;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background: var(--color-void);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-petal);
+    color: var(--color-void);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 2px;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+  }
+
+  /* Pixel cursors (desktop only): pink arrow, sky-blue arrow with a sparkle on links. */
+  @media (pointer: fine) {
+    body {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='34' viewBox='0 0 12 17' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1h-1zM0 1h1v1h-1zM1 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM3 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM0 5h1v1h-1zM5 5h1v1h-1zM0 6h1v1h-1zM6 6h1v1h-1zM0 7h1v1h-1zM7 7h1v1h-1zM0 8h1v1h-1zM8 8h1v1h-1zM0 9h1v1h-1zM9 9h1v1h-1zM0 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM0 11h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM0 12h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM0 13h1v1h-1zM1 13h1v1h-1zM4 13h1v1h-1zM7 13h1v1h-1zM0 14h1v1h-1zM4 14h1v1h-1zM7 14h1v1h-1zM5 15h1v1h-1zM8 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1z' fill='%230a0408'/%3E%3Cpath d='M1 2h1v1h-1zM1 3h1v1h-1zM1 4h1v1h-1zM1 5h1v1h-1zM1 6h1v1h-1zM1 7h1v1h-1zM1 8h1v1h-1zM1 9h1v1h-1zM1 10h1v1h-1zM1 11h1v1h-1zM1 12h1v1h-1z' fill='%23fff7fa'/%3E%3Cpath d='M2 3h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1zM4 5h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM2 7h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM2 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM2 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM4 12h1v1h-1zM5 12h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1z' fill='%23f78fc4'/%3E%3C/svg%3E") 2 2, auto;
+    }
+
+    a,
+    button,
+    summary,
+    label[for],
+    [role="button"],
+    [role="link"],
+    [role="tab"],
+    [role="option"],
+    select {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='34' viewBox='0 0 12 17' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h1v1h-1zM0 1h1v1h-1zM1 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM3 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM0 5h1v1h-1zM5 5h1v1h-1zM0 6h1v1h-1zM6 6h1v1h-1zM0 7h1v1h-1zM7 7h1v1h-1zM0 8h1v1h-1zM8 8h1v1h-1zM0 9h1v1h-1zM9 9h1v1h-1zM0 10h1v1h-1zM6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM0 11h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM0 12h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM0 13h1v1h-1zM1 13h1v1h-1zM4 13h1v1h-1zM7 13h1v1h-1zM0 14h1v1h-1zM4 14h1v1h-1zM7 14h1v1h-1zM5 15h1v1h-1zM8 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1z' fill='%230a0408'/%3E%3Cpath d='M10 0h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM11 1h1v1h-1zM1 2h1v1h-1zM10 2h1v1h-1zM1 3h1v1h-1zM1 4h1v1h-1zM1 5h1v1h-1zM1 6h1v1h-1zM1 7h1v1h-1zM1 8h1v1h-1zM1 9h1v1h-1zM1 10h1v1h-1zM1 11h1v1h-1zM1 12h1v1h-1z' fill='%23fff7fa'/%3E%3Cpath d='M2 3h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM2 5h1v1h-1zM3 5h1v1h-1zM4 5h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM2 7h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM2 9h1v1h-1zM3 9h1v1h-1zM4 9h1v1h-1zM5 9h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM2 10h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM2 11h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM4 12h1v1h-1zM5 12h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1z' fill='%23c3a6ff'/%3E%3C/svg%3E") 2 2, pointer;
+    }
+
+    input[type="text"],
+    input[type="search"],
+    textarea {
+      cursor: text;
+    }
+  }
+
+  /* UI chrome and display type aren't selectable (big NYMPHELIA letters, LED readouts,
+     tags, title bars, buttons, cards…). Real content — descriptions, and VOD titles
+     opted back in with `select-text` — still is. */
+  a,
+  button,
+  label,
+  summary,
+  nav,
+  header,
+  img,
+  svg,
+  canvas,
+  video,
+  [role="button"],
+  [role="radio"],
+  [role="tab"],
+  [role="progressbar"],
+  .font-display,
+  .font-dot {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  input,
+  textarea,
+  [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  /* Tailwind's preflight leaves buttons with the default arrow; inherit our cursor above. */
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────────── */
+
+/* Animated holographic text fill. */
+@utility holo-text {
+  background-image: var(--holo);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-holo);
+}
+
+/* Holographic fill for surfaces (buttons, bars). */
+@utility holo-bg {
+  background-image: var(--holo);
+  background-size: 200% 100%;
+  animation: var(--animate-holo);
+}
+
+/* 1px animated conic "holo" border. Put on a positioned element with a radius. */
+@utility holo-border {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--holo-angle), #f78fc4, #c3a6ff, #8f7ae6, #ff6fb5, #fff7fa, #f78fc4);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation: holo-spin 6s linear infinite;
+    pointer-events: none;
+  }
+}
+
+/* Static dot-matrix textures. */
+@utility dot-grid {
+  background-image: radial-gradient(rgb(247 143 196 / 0.16) 1px, transparent 1.5px);
+  background-size: 12px 12px;
+}
+
+@utility dot-grid-fine {
+  background-image: radial-gradient(rgb(251 207 232 / 0.12) 0.8px, transparent 1.2px);
+  background-size: 6px 6px;
+}
+
+/* Halftone gradient: dots that grow toward the bottom of the element. */
+@utility halftone-fade {
+  background-image: radial-gradient(rgb(247 143 196 / 0.5) 1.4px, transparent 1.8px);
+  background-size: 9px 9px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000);
+  mask-image: linear-gradient(to bottom, transparent, #000);
+}
+
+@utility scanlines {
+  background-image: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.045) 0 1px, transparent 1px 3px);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 14px rgb(247 143 196 / 0.55), 0 0 2px rgb(255 247 250 / 0.4);
+}
+
+@utility text-glow-sky {
+  text-shadow: 0 0 14px rgb(195 166 255 / 0.6), 0 0 2px rgb(255 247 250 / 0.4);
+}
+
+/* Soft chrome glow for giant display type (text-stroke shows the variable font's
+   internal contours, so use a drop-shadow instead). */
+@utility text-chrome {
+  filter: drop-shadow(0 0 1px rgb(255 247 250 / 0.45)) drop-shadow(0 0 22px rgb(247 143 196 / 0.28));
+}
+
+/* Animated TV static (pair with mix-blend + low opacity). */
+@utility tv-static {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  animation: var(--animate-static);
+}
+
+/* Shimmering skeleton/loading sheen. */
+@utility sheen {
+  background-image: linear-gradient(100deg, transparent 30%, rgb(251 207 232 / 0.08) 45%, rgb(195 166 255 / 0.1) 55%, transparent 70%);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility gutter-x {
+  padding-inline: var(--gutter);
+}
+
+/* ── Scrollbar (WebKit) ───────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-rose), var(--color-petal));
+  border: 3px solid var(--color-ink);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-petal);
+}
+
+/* ── Scroll-driven reveals (progressive enhancement) ──────────────────────── */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+/* ── View transitions (card → player morph, route cross-fade) ─────────────── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+}
+
+::view-transition-group(vod-media) {
+  animation-duration: 0.5s;
+  animation-timing-function: var(--ease-snap);
+}
+
+::view-transition-old(vod-media),
+::view-transition-new(vod-media) {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Misc ─────────────────────────────────────────────────────────────────── */
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+}
+
+/* Pause decorative animation while a video is fullscreen so the decoder gets the GPU. */
+body:has(:fullscreen) .fx-pausable,
+body:has(.vjs-fullscreen) .fx-pausable {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Glitch: RGB-split slices that flicker across display type every few seconds.
+   Put `data-text` (same text) on the element. ──────────────────────────────── */
+@layer components {
+  .glitch {
+    position: relative;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    -webkit-text-stroke: 0;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+  .glitch::before {
+    color: var(--color-sky);
+    animation: glitch-a 6s steps(1, end) infinite;
+  }
+  .glitch::after {
+    color: var(--color-neon);
+    animation: glitch-b 6s steps(1, end) infinite;
+  }
+}
+
+@keyframes glitch-a {
+  0%, 89%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+  90% { opacity: 0.85; transform: translate(-6px, 0); clip-path: inset(8% 0 62% 0); }
+  92% { opacity: 0.85; transform: translate(5px, 0); clip-path: inset(58% 0 18% 0); }
+  94% { opacity: 0.85; transform: translate(-3px, 0); clip-path: inset(32% 0 44% 0); }
+  96% { opacity: 0; }
+}
+
+@keyframes glitch-b {
+  0%, 90%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 100% 0); }
+  91% { opacity: 0.8; transform: translate(6px, 0); clip-path: inset(70% 0 6% 0); }
+  93% { opacity: 0.8; transform: translate(-5px, 0); clip-path: inset(18% 0 60% 0); }
+  95% { opacity: 0.8; transform: translate(3px, 0); clip-path: inset(45% 0 30% 0); }
+  97% { opacity: 0; }
+}

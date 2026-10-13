@@ -48,7 +48,7 @@ module.exports = (req, res) => {
   const { slug = "", s, e, n, t } = req.query || {};
 
   const proto = (req.headers["x-forwarded-proto"] || "https").split(",")[0].trim();
-  const host = (req.headers["x-forwarded-host"] || req.headers.host || "nymphelia.com").split(",")[0].trim();
+  const host = (req.headers["x-forwarded-host"] || req.headers.host || "vods.nymphelia.co").split(",")[0].trim();
   const baseUrl = `${proto}://${host}`;
 
   const vod = vods.find((v) => makeSlug(v) === slug);
@@ -91,7 +91,7 @@ module.exports = (req, res) => {
     : `Watch this VOD on ${SITE_NAME}`;
 
   // Thumbnail in vods.json is a site-relative path; make it absolute for OG.
-  let image = vod.thumbnail_url || "/loading.gif";
+  let image = vod.thumbnail_url || "/meta_image.png";
   if (image.startsWith("/")) image = `${baseUrl}${image}`;
 
   const html = `<!DOCTYPE html>
