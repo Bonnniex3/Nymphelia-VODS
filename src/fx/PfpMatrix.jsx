@@ -8,7 +8,7 @@ import {
   releaseContextLater,
 } from "./gl.js";
 import { createLoop } from "./loop.js";
-import { usePrefersReducedMotion } from "./media.js";
+import { useLiteFx } from "./perf.js";
 import { watchActivity } from "./observe.js";
 import { PALETTE, hexToRgb } from "./palette.js";
 
@@ -386,7 +386,7 @@ export default function PfpMatrix({
   alt = "Nymphelia",
 }) {
   const canvasRef = useRef(null);
-  const reduced = usePrefersReducedMotion();
+  const reduced = useLiteFx(); // still frame: reduced motion or lite effects
   const [glSupport] = useState(detectWebGL);
 
   useEffect(() => {

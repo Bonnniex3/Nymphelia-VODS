@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { Archive, House, Menu, Radio, X } from "lucide-react";
+import { Archive, Diamond, House, Menu, Radio, X } from "lucide-react";
 import PFP from "../assets/pfp.png";
 import { CHANNEL, SOCIALS } from "../lib/channel";
 import { useNow } from "../lib/hooks";
+import { useFx } from "../fx/perf";
 import { cn } from "../lib/cn";
 import BrandIcon from "../ui/BrandIcon";
 import Sparkle from "../ui/Sparkle";
@@ -33,6 +34,48 @@ function Clock({ compact = false }) {
         )}
       </time>
     </div>
+  );
+}
+
+// Effects switch, full <-> lite (src/fx/perf.js). Lite is picked automatically on machines
+// without graphics acceleration or that run slowly; clicking here makes it the visitor's choice.
+function FxToggle({ wide = false }) {
+  const fx = useFx();
+  const state = fx.lite ? "lite" : "full";
+  const why = fx.source === "auto" && fx.reason ? ` (auto: ${fx.reason})` : "";
+  const Icon = fx.lite ? <Diamond className="size-3 text-mute" strokeWidth={2.4} /> : <Sparkle className="size-3 text-petal" />;
+
+  if (wide) {
+    return (
+      <button
+        type="button"
+        onClick={fx.toggle}
+        aria-pressed={fx.lite}
+        className="flex h-14 items-center justify-between gap-3 rounded-2xl border border-line bg-panel px-4 font-dot text-blush/85 transition-colors hover:border-petal/60 hover:text-petal"
+      >
+        <span className="flex items-center gap-2.5 text-lg">
+          {Icon} lite effects
+        </span>
+        <span className="truncate text-xs text-mute">
+          {fx.lite ? "on" : "off"}
+          {why}
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={fx.toggle}
+      aria-pressed={fx.lite}
+      aria-label="Lite effects"
+      title={`effects: ${state}${why}. click for ${fx.lite ? "full" : "lite"}`}
+      className="hidden items-center gap-1.5 rounded-xl border border-line bg-ink/70 px-3 py-1.5 font-dot text-[14px] tracking-wide transition-colors hover:border-petal/60 hover:bg-panel-2 md:flex"
+    >
+      {Icon}
+      <span className={fx.lite ? "text-mute" : "text-blush/85"}>{fx.lite ? "lite" : "fx"}</span>
+    </button>
   );
 }
 
@@ -138,6 +181,7 @@ export default function TopBar() {
                 </li>
               ))}
             </ul>
+            <FxToggle />
             <Clock compact />
             <button
               type="button"
@@ -195,6 +239,8 @@ export default function TopBar() {
                   </li>
                 ))}
               </ul>
+              <div className="font-dot text-xs tracking-[0.3em] text-mute">// EFFECTS</div>
+              <FxToggle wide />
               <p className="mt-auto font-dot text-xs text-dim">{CHANNEL.kana} ✦ every stream, archived ♡</p>
             </div>
           </motion.div>

@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { getDpr, sizeCanvas } from "./dpr.js";
 import { createLoop } from "./loop.js";
-import { useMediaQuery, usePrefersReducedMotion } from "./media.js";
+import { useMediaQuery } from "./media.js";
+import { useLiteFx } from "./perf.js";
 import { PALETTE, hexToRgb, rgba } from "./palette.js";
 
 /*
@@ -71,8 +72,8 @@ function makeSprites(dpr) {
 
 export default function CursorSparkles() {
   const fine = useMediaQuery("(pointer: fine)");
-  const reduced = usePrefersReducedMotion();
-  const enabled = fine && !reduced;
+  const still = useLiteFx();
+  const enabled = fine && !still;
   const canvasRef = useRef(null);
 
   useEffect(() => {

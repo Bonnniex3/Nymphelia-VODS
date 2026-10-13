@@ -7,3 +7,4 @@ export { default as CursorSparkles } from "./CursorSparkles.jsx";
 export { textToDotColumns, glyphColumns, DOT_FONT_ROWS } from "./dotFont.js";
 export { useMediaQuery, usePrefersReducedMotion } from "./media.js";
 export { PALETTE } from "./palette.js";
+export { initFx, setFxMode, useFx, useLiteFx } from "./perf.js";

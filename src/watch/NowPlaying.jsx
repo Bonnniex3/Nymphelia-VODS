@@ -80,7 +80,7 @@ export default function NowPlaying({ vod, time, duration, status, chapterCount, 
       aria-labelledby="vod-title"
       className={className}
     >
-      <div aria-hidden="true" className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full bg-petal/10 blur-3xl" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-16 -right-16 size-48 rounded-full fx-glow bg-petal/10 blur-3xl" />
       <div className="relative p-5">
         <p className="flex items-center gap-2 font-dot text-[11px] tracking-[0.18em] text-petal/90 uppercase">
           <span className={cn("size-1.5 rounded-full bg-petal shadow-[0_0_8px_var(--color-petal)]", live && "animate-blink")} />

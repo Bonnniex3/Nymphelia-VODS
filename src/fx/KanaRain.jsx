@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { getDpr, sizeCanvas } from "./dpr.js";
 import { createLoop } from "./loop.js";
-import { usePrefersReducedMotion } from "./media.js";
+import { useLiteFx } from "./perf.js";
 import { watchActivity } from "./observe.js";
 import { PALETTE, hexToRgb, mixRgb, rgba } from "./palette.js";
 
@@ -68,7 +68,7 @@ const BASE_STYLE = {
 
 export default function KanaRain({ className, fontSize = 16, density = 0.8, speed = 1 }) {
   const canvasRef = useRef(null);
-  const reduced = usePrefersReducedMotion();
+  const reduced = useLiteFx(); // still frame: reduced motion or lite effects
 
   useEffect(() => {
     const canvas = canvasRef.current;

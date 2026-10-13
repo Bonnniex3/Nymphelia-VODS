@@ -221,7 +221,7 @@ function WatchView({ vod, slug }) {
               <canvas
                 ref={glow}
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-4 -left-6 z-0 hidden h-[calc(100%+2rem)] w-[calc(100%+3rem)] opacity-50 blur-[56px] saturate-[1.4] lg:block"
+                className="pointer-events-none absolute -top-4 -left-6 z-0 hidden h-[calc(100%+2rem)] w-[calc(100%+3rem)] fx-glow opacity-50 blur-[56px] saturate-[1.4] lg:block"
               />
               <Window
                 title="vod_player.exe"
@@ -233,7 +233,7 @@ function WatchView({ vod, slug }) {
               >
                 <div className="vod-stage relative bg-void/60 lg:p-3">
                   {/* …and onto the letterbox bezel, under a fine dot screen. */}
-                  <canvas ref={glow} aria-hidden="true" className="pointer-events-none absolute inset-0 hidden size-full opacity-60 blur-[44px] saturate-[1.5] lg:block" />
+                  <canvas ref={glow} aria-hidden="true" className="pointer-events-none absolute inset-0 hidden size-full fx-glow opacity-60 blur-[44px] saturate-[1.5] lg:block" />
                   <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden dot-grid-fine opacity-60 lg:block" />
                   <Corners />
                   <div

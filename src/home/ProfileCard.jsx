@@ -101,7 +101,7 @@ export default function ProfileCard({ className }) {
         </div>
 
         <div className="relative mt-5 size-[clamp(6.5rem,min(10vw,16vh),11rem)]">
-          <div aria-hidden="true" className="absolute -inset-3 rounded-full opacity-50 blur-2xl [background:conic-gradient(from_0deg,#f78fc4,#c3a6ff,#8f7ae6,#ff6fb5,#f78fc4)]" />
+          <div aria-hidden="true" className="absolute -inset-3 rounded-full fx-glow opacity-50 blur-2xl [background:conic-gradient(from_0deg,#f78fc4,#c3a6ff,#8f7ae6,#ff6fb5,#f78fc4)]" />
           <div aria-hidden="true" className="absolute -inset-[5px] animate-spin-slow rounded-full [background:conic-gradient(from_0deg,#f78fc4,#fff7fa,#c3a6ff,#8f7ae6,#ff6fb5,#f78fc4)]" />
           <img src={PFP} alt={`${CHANNEL.name}'s avatar`} className="relative size-full rounded-full border-[3px] border-panel object-cover" />
           <span className="absolute -right-3 bottom-1 rotate-[10deg] rounded-lg border border-white/30 bg-petal px-2 py-0.5 font-dot text-[11px] text-void shadow-[0_6px_16px_-4px_rgb(247_143_196/0.8)]">

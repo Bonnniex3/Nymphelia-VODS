@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useReducedMotion } from "../lib/hooks";
+import { useLiteFx } from "../fx/perf";
 
 const W = 48;
 const H = 27;
@@ -17,6 +18,7 @@ const H = 27;
  */
 export default function useAmbient(player, poster) {
   const reduced = useReducedMotion();
+  const still = useLiteFx();
   const targets = useRef(new Set());
   const buffer = useRef(null);
 
@@ -53,6 +55,7 @@ export default function useAmbient(player, poster) {
   );
 
   useEffect(() => {
+    if (still) return undefined; // lite effects: the glow canvases are hidden, so draw nothing
     const ctx = getBuffer();
     let cancelled = false;
 
@@ -95,7 +98,7 @@ export default function useAmbient(player, poster) {
       clearInterval(id);
       if (!player.isDisposed()) player.off(events, snap);
     };
-  }, [player, poster, reduced, flush]);
+  }, [player, poster, reduced, still, flush]);
 
   return register;
 }

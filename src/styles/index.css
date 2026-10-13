@@ -358,6 +358,35 @@ body:has(.vjs-fullscreen) .fx-pausable {
   animation-play-state: paused !important;
 }
 
+/* ── Lite effects (no graphics acceleration, a slow machine, or the visitor's choice; see
+   src/fx/perf.js): same look, nothing that makes the CPU repaint every frame. Looping
+   decoration stops, blurred glows go, backdrop blur becomes a solid tint. The blink
+   cursors and loading spinners stay: they're cheap and they mean something. ──────────── */
+html[data-fx="lite"] :is(.holo-text, .holo-bg, .sheen, .tv-static, .animate-spin-slow, .animate-twinkle, .animate-float, .animate-ping, .animate-roll, .animate-boot),
+html[data-fx="lite"] .holo-border::after {
+  animation: none !important;
+}
+
+html[data-fx="lite"] .glitch::before,
+html[data-fx="lite"] .glitch::after,
+html[data-fx="lite"] .fx-glow {
+  display: none !important;
+}
+
+html[data-fx="lite"] :is(.backdrop-blur-md, .backdrop-blur-xl) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Without the blur, see-through chrome lets the page ghost through: firm it up. */
+html[data-fx="lite"] header.backdrop-blur-md {
+  background-color: color-mix(in srgb, var(--color-void) 94%, transparent);
+}
+
+html[data-fx="lite"] .backdrop-blur-xl {
+  background-color: var(--color-void);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

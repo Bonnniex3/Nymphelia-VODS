@@ -9,7 +9,7 @@ import {
   releaseContextLater,
 } from "./gl.js";
 import { createLoop } from "./loop.js";
-import { usePrefersReducedMotion } from "./media.js";
+import { useLiteFx } from "./perf.js";
 import { watchActivity } from "./observe.js";
 import { getPointer, subscribePointer } from "./pointer.js";
 
@@ -224,7 +224,7 @@ const BASE_STYLE = {
  */
 export default function HalftoneField({ className, cell = 14, intensity = 1 }) {
   const canvasRef = useRef(null);
-  const reduced = usePrefersReducedMotion();
+  const reduced = useLiteFx(); // still frame: reduced motion or lite effects
   const [glSupport] = useState(detectWebGL);
   const pitch = Math.max(4, cell);
 
@@ -270,7 +270,7 @@ export default function HalftoneField({ className, cell = 14, intensity = 1 }) {
     function layout() {
       W = canvas.clientWidth || window.innerWidth;
       H = canvas.clientHeight || window.innerHeight;
-      dpr = getDpr(MAX_DPR);
+      dpr = getDpr(reduced ? 1 : MAX_DPR); // a single still frame doesn't need hi-dpi
       if (W * H * dpr * dpr > MAX_PIXELS) dpr = 1;
       sizeCanvas(canvas, W, H, dpr);
 

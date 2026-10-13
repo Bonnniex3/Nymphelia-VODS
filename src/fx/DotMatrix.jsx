@@ -3,6 +3,7 @@ import { DOT_FONT_ROWS, textToDotColumns } from "./dotFont.js";
 import { getDpr, sizeCanvas } from "./dpr.js";
 import { createLoop } from "./loop.js";
 import { usePrefersReducedMotion } from "./media.js";
+import { useFx } from "./perf.js";
 import { watchActivity } from "./observe.js";
 import { PALETTE, hexToRgb, mixRgb, parseColor, rgba } from "./palette.js";
 import { getPointer, subscribePointer } from "./pointer.js";
@@ -58,6 +59,7 @@ export default function DotMatrix({
 }) {
   const canvasRef = useRef(null);
   const reduced = usePrefersReducedMotion();
+  const { lite } = useFx();
   const rows = DOT_FONT_ROWS + 2 * padY;
   const fitCols = useMemo(
     () => (mode === "fit" ? textToDotColumns(text, gap).length + 2 * FIT_PAD : 0),
@@ -71,8 +73,8 @@ export default function DotMatrix({
 
     const fit = mode === "fit";
     const marquee = mode === "marquee" && !reduced;
-    const canInteract = interactive && !reduced;
-    const sheenOn = fit && !reduced;
+    const canInteract = interactive && !reduced && !lite;
+    const sheenOn = fit && !reduced && !lite;
     // Marquee repeats the text with one space between copies (unless it already ends in one).
     const unitText = marquee && text && !/\s$/.test(text) ? `${text} ` : text;
     const unit = textToDotColumns(unitText, gap);
@@ -388,7 +390,7 @@ export default function DotMatrix({
       return busy;
     }
 
-    const loop = createLoop(frame, 60);
+    const loop = createLoop(frame, lite ? 30 : 60);
 
     const relayout = () => {
       if (layout()) draw(performance.now());
@@ -454,6 +456,7 @@ export default function DotMatrix({
     align,
     interactive,
     reduced,
+    lite,
     rows,
   ]);
 
