@@ -58,6 +58,7 @@ export default function ChapterList({ id, chapters, activeIndex, total, vodTime,
       id={id}
       tone="lilac"
       title="chapters.lst"
+      foldable
       icon={<ListVideo className="size-3.5" strokeWidth={2.4} />}
       actions={
         <Tag tone="lilac" className="h-5 px-1.5 text-[11px]">

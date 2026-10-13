@@ -72,6 +72,7 @@ function Hotkeys() {
           >
             <Window
               title="hotkeys.txt"
+              onClose={() => setOpen(false)}
               icon={<Keyboard className="size-3.5" />}
               className="bg-panel/95 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.95),0_0_40px_-18px_rgb(247_143_196/0.5)] backdrop-blur-md"
             >

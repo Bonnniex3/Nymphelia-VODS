@@ -82,6 +82,7 @@ function MoreVods({ vod, wide = false, className }) {
       variants={RISE}
       tone="sky"
       title="up_next.lst"
+      foldable
       icon={<Clapperboard className="size-3.5" strokeWidth={2.4} />}
       aria-label="More VODs"
       className={className}

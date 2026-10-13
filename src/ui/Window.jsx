@@ -1,3 +1,4 @@
+import { useId, useState } from "react";
 import { cn } from "../lib/cn";
 import Sparkle from "./Sparkle";
 
@@ -7,20 +8,35 @@ const TONES = {
   lilac: { icon: "text-lilac", bar: "from-lilac/[0.1]" },
 };
 
-// Decorative minimise / maximise / close buttons.
-function WindowControls() {
+// Title-bar button. Small like the rest of the chrome, with a wider invisible hit area.
+const CONTROL =
+  "relative grid size-5 place-items-center rounded-[5px] border font-dot text-[12px] leading-none transition-colors duration-150 after:absolute after:-inset-1.5 after:content-['']";
+
+const foldKey = (title) => `window-folded:${title}`;
+
+function readFolded(title) {
+  try {
+    return localStorage.getItem(foldKey(title)) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function saveFolded(title, folded) {
+  try {
+    if (folded) localStorage.setItem(foldKey(title), "1");
+    else localStorage.removeItem(foldKey(title));
+  } catch {
+    /* storage unavailable: the window just won't remember */
+  }
+}
+
+// Windows without a real action get this instead of buttons: a quiet flourish, not a control.
+function TitleDots() {
   return (
-    <span className="flex items-center gap-1" aria-hidden="true">
-      {["–", "□", "×"].map((glyph, i) => (
-        <span
-          key={glyph}
-          className={cn(
-            "grid size-[18px] place-items-center rounded-[5px] border border-line-strong bg-ink/60 font-dot text-[11px] leading-none text-mute",
-            i === 2 && "border-petal/40 text-petal"
-          )}
-        >
-          {glyph}
-        </span>
+    <span className="flex items-center gap-1 px-0.5" aria-hidden="true">
+      {[0, 1, 2].map((i) => (
+        <span key={i} className="size-[5px] rounded-full bg-mute/30" />
       ))}
     </span>
   );
@@ -29,6 +45,10 @@ function WindowControls() {
 /**
  * Y2K OS window: title bar (icon · title · actions · controls) over a panel body.
  * `title={null}` renders a bare panel with the same chrome-less frame.
+ *
+ * Title-bar controls are only ever real: `foldable` adds a – / + button that folds the body
+ * away (remembered per window title), `onClose` adds a × that calls it. Windows with neither
+ * show three dim dots. `controls={false}` hides the right-hand chrome entirely.
  */
 export default function Window({
   as: Tag = "section",
@@ -36,6 +56,8 @@ export default function Window({
   icon,
   actions,
   controls = true,
+  foldable = false,
+  onClose,
   tone = "petal",
   className,
   bodyClassName,
@@ -43,6 +65,16 @@ export default function Window({
   ...props
 }) {
   const t = TONES[tone] || TONES.petal;
+  const bodyId = useId();
+  const [folded, setFolded] = useState(() => foldable && title != null && readFolded(title));
+  const name = props["aria-label"] || title;
+  const isFolded = foldable && folded;
+
+  const toggleFold = () => {
+    setFolded(!folded);
+    saveFolded(title, !folded);
+  };
+
   return (
     <Tag
       className={cn(
@@ -55,7 +87,8 @@ export default function Window({
       {title != null && (
         <header
           className={cn(
-            "flex h-9 shrink-0 items-center gap-2 border-b border-line bg-gradient-to-r to-transparent px-3",
+            "flex h-9 shrink-0 items-center gap-2 border-line bg-gradient-to-r to-transparent px-3",
+            !isFolded && "border-b",
             t.bar
           )}
         >
@@ -63,11 +96,42 @@ export default function Window({
           <span className="truncate font-dot text-[13px] tracking-wide text-blush/85">{title}</span>
           <span className="ml-auto flex shrink-0 items-center gap-2">
             {actions}
-            {controls && <WindowControls />}
+            {controls && (foldable || onClose) && (
+              <span className="flex items-center gap-1.5">
+                {foldable && (
+                  <button
+                    type="button"
+                    onClick={toggleFold}
+                    aria-expanded={!isFolded}
+                    aria-controls={bodyId}
+                    aria-label={`${isFolded ? "Expand" : "Fold"} ${name}`}
+                    title={isFolded ? "expand" : "fold"}
+                    className={cn(CONTROL, "border-line-strong bg-ink/60 text-mute hover:border-petal/60 hover:bg-panel-2 hover:text-petal")}
+                  >
+                    {isFolded ? "+" : "–"}
+                  </button>
+                )}
+                {onClose && (
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    aria-label={`Close ${name}`}
+                    title="close"
+                    className={cn(CONTROL, "border-petal/40 bg-ink/60 text-petal hover:border-petal hover:bg-petal hover:text-void")}
+                  >
+                    ×
+                  </button>
+                )}
+              </span>
+            )}
+            {controls && !foldable && !onClose && <TitleDots />}
           </span>
         </header>
       )}
-      <div className={cn("relative min-h-0 flex-1", bodyClassName)}>{children}</div>
+      {/* Folded bodies stay mounted (hidden) so aria-controls always points at something. */}
+      <div id={bodyId} hidden={isFolded} className={cn("relative min-h-0 flex-1", bodyClassName)}>
+        {children}
+      </div>
     </Tag>
   );
 }

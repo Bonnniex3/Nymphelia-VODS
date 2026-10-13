@@ -13,9 +13,8 @@ html, body { background: #0a0408; color: #fff7fa; }
 .scan { position: absolute; inset: 0; background-image: repeating-linear-gradient(to bottom, rgb(255 255 255 / .04) 0 1px, transparent 1px 3px); }
 .win { position: absolute; border: 1.5px solid rgb(251 207 232 / .18); border-radius: 26px; background: rgb(26 12 21 / .82); overflow: hidden; box-shadow: 0 40px 80px -30px #000; }
 .bar { height: 46px; display: flex; align-items: center; gap: 12px; padding: 0 18px; border-bottom: 1.5px solid rgb(251 207 232 / .12); background: linear-gradient(90deg, rgb(247 143 196 / .12), transparent); font-family: DotGothic16; font-size: 19px; color: rgb(251 207 232 / .85); }
-.bar .ctl { margin-left: auto; display: flex; gap: 7px; }
-.bar .ctl span { width: 22px; height: 22px; border: 1.5px solid rgb(251 207 232 / .22); border-radius: 6px; display: grid; place-items: center; font-size: 14px; color: #ae8fa0; }
-.bar .ctl span:last-child { color: #f78fc4; border-color: rgb(247 143 196 / .45); }
+.bar .ctl { margin-left: auto; display: flex; gap: 6px; }
+.bar .ctl span { width: 7px; height: 7px; border-radius: 50%; background: rgb(174 143 160 / .3); }
 .holo { background: linear-gradient(100deg, #f78fc4 0%, #fbcfe8 18%, #c3a6ff 38%, #8f7ae6 56%, #ff6fb5 76%, #f78fc4 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 18px rgb(247 143 196 / .35)); }
 .star { display: inline-block; width: 1em; height: 1em; background: currentColor; clip-path: path('M12 0c.7 6.6 4.8 10.9 12 12-7.2 1.1-11.3 5.4-12 12-.7-6.6-4.8-10.9-12-12C7.2 10.9 11.3 6.6 12 0Z'); }
 .pfp { position: absolute; border-radius: 50%; }
