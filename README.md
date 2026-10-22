@@ -124,6 +124,10 @@ node scripts/meoyumi-sync/sync.mjs ../MeoyumiVODS
 
 It copies Meoyumi's `src/`, configs and brand templates, swaps in the colours, name and socials from [scripts/meoyumi-sync/brand.json](scripts/meoyumi-sync/brand.json), re-applies this fork's own additions (`scripts/meoyumi-sync/overlay/`) and runs `npm install`. This repo's VOD data, `scripts/fetch-vods.js`, `.env` and pfp are left alone.
 
+## Chat replay sidecars
+
+[scripts/chat-sync/](scripts/chat-sync/README.md) holds the VM tooling that downloads a Twitch VOD's chat and uploads a `<video stem>.chat.json` sidecar into the same Internet Archive item as the video. It is **forward-only**: only `nymphelia` VODs streamed on or after 2026-10-22 04:00 UTC get chat; older VODs are never backfilled. The live-recorded gaming alt (`nyaphelia`) is not matched. The tooling runs on the VM from an hourly `nymphelia-chat.timer`, and the chat-replay panel on the watch page appears only for VODs that have a sidecar. Run the offline tests with `python -B -I -m unittest discover -s scripts/chat-sync/tests`; deployment steps and status are in the chat-sync README.
+
 ## Credits
 
 - VODs and likeness: **Nymphelia**

@@ -1,0 +1,183 @@
+{
+ "FileInfo": {
+  "Version": {
+   "Major": 1,
+   "Minor": 4,
+   "Patch": 0
+  }
+ },
+ "streamer": {
+  "name": "Smizzles",
+  "id": 111
+ },
+ "video": {
+  "title": "badges",
+  "id": "2500000002",
+  "start": 0.0,
+  "end": 30.0,
+  "length": 30.0,
+  "chapters": []
+ },
+ "comments": [
+  {
+   "_id": "b-1",
+   "created_at": "2026-10-01T00:00:01Z",
+   "channel_id": "111",
+   "content_type": "video",
+   "content_id": "2500000002",
+   "content_offset_seconds": 1,
+   "commenter": {
+    "display_name": "Modly",
+    "_id": "1",
+    "name": "modly"
+   },
+   "message": {
+    "body": "hello chat",
+    "bits_spent": 0,
+    "fragments": [
+     {
+      "text": "hello chat",
+      "emoticon": null
+     }
+    ],
+    "user_badges": [
+     {
+      "_id": "moderator",
+      "version": "1"
+     },
+     {
+      "_id": "bot-badge",
+      "version": "1"
+     }
+    ],
+    "user_color": "#5B99FF",
+    "emoticons": []
+   }
+  },
+  {
+   "_id": "b-2",
+   "created_at": "2026-10-01T00:00:02Z",
+   "channel_id": "111",
+   "content_type": "video",
+   "content_id": "2500000002",
+   "content_offset_seconds": 2,
+   "commenter": {
+    "display_name": "Plain",
+    "_id": "2",
+    "name": "plain"
+   },
+   "message": {
+    "body": "no colour or badges",
+    "bits_spent": 0,
+    "fragments": [
+     {
+      "text": "no colour or badges",
+      "emoticon": null
+     }
+    ],
+    "user_badges": [],
+    "user_color": "",
+    "emoticons": []
+   }
+  },
+  {
+   "_id": "b-3",
+   "created_at": "2026-10-01T00:00:03Z",
+   "channel_id": "111",
+   "content_type": "video",
+   "content_id": "2500000002",
+   "content_offset_seconds": 3,
+   "commenter": {
+    "display_name": "Subby",
+    "_id": "3",
+    "name": "subby"
+   },
+   "message": {
+    "body": "Kappa hi",
+    "bits_spent": 0,
+    "fragments": [
+     {
+      "text": "Kappa",
+      "emoticon": {
+       "emoticon_id": "25"
+      }
+     },
+     {
+      "text": " hi",
+      "emoticon": null
+     }
+    ],
+    "user_badges": [
+     {
+      "_id": "subscriber",
+      "version": "12"
+     },
+     {
+      "_id": "moderator",
+      "version": "1"
+     },
+     {
+      "_id": "no-image",
+      "version": "1"
+     }
+    ],
+    "user_color": "#FF69B4",
+    "emoticons": []
+   }
+  }
+ ],
+ "embeddedData": {
+  "thirdParty": [],
+  "firstParty": [
+   {
+    "id": "25",
+    "imageScale": 2,
+    "data": "AA==",
+    "name": "Kappa"
+   }
+  ],
+  "twitchBadges": [
+   {
+    "name": "moderator",
+    "versions": {
+     "1": {
+      "title": "Moderator",
+      "description": "Moderator",
+      "bytes": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOoTjv0HwAFpgKjg+jsmAAAAABJRU5ErkJggg=="
+     }
+    }
+   },
+   {
+    "name": "bot-badge",
+    "versions": {
+     "1": {
+      "title": "Chat Bot",
+      "description": "Chat Bot",
+      "bytes": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAPElEQVR4nO3OMQEAIAwDsKnFBO5mjGng6o4c+VP39Nuk0gEhISGhdEBISEgoHRASEhJKB4SEhITSAaFfA+XeVOQonWuDAAAAAElFTkSuQmCC"
+     }
+    }
+   },
+   {
+    "name": "subscriber",
+    "versions": {
+     "12": {
+      "title": "12-Month Subscriber",
+      "description": "Subscriber",
+      "bytes": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOoTjv0HwAFpgKjg+jsmAAAAABJRU5ErkJggg=="
+     }
+    }
+   },
+   {
+    "name": "premium",
+    "versions": {
+     "1": {
+      "title": "Prime Gaming",
+      "description": "Prime",
+      "bytes": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGOoTjv0HwAFpgKjg+jsmAAAAABJRU5ErkJggg=="
+     }
+    }
+   }
+  ],
+  "twitchBits": []
+ }
+}

@@ -1,0 +1,20 @@
+# Python bytecode and test caches
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local runtime state (the VM keeps these under /opt/vodsync/chat-nymphelia; never commit them)
+mapping.json
+mapping.json.lock
+mapping-conflicts.json
+chat-quarantine.json
+forward-only.json
+chat-state.json
+chat-job.lock
+*.lock
+queue/
+out/
+raw/
+*.chat.json
+*.tmp
+*.part

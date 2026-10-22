@@ -1,0 +1,32 @@
+{
+  "FileInfo": {"Version": {"Major": 1, "Minor": 4, "Patch": 0}, "CreatedAt": "2026-10-01T00:00:00Z", "UpdatedAt": "0001-01-01T00:00:00"},
+  "streamer": {"name": "Smizzles", "id": 111},
+  "video": {"title": "fixture", "id": "2500000001", "start": 0.0, "end": 60.0, "length": 60.0, "chapters": []},
+  "comments": [
+    {"_id": "c-late", "created_at": "2026-10-01T00:00:20Z", "channel_id": "111", "content_type": "video", "content_id": "2500000001",
+     "content_offset_seconds": 20.5, "commenter": {"display_name": "Zoë", "_id": "9", "name": "zoe"},
+     "message": {"body": "late 日本語 ✨", "fragments": [{"text": "late 日本語 ✨", "emoticon": null}], "user_badges": [], "emoticons": []}},
+    {"_id": "c-b", "content_type": "video", "content_id": "2500000001",
+     "content_offset_seconds": 5.25, "commenter": {"display_name": "Bea", "_id": "2", "name": "bea"},
+     "message": {"body": "second at same time", "fragments": [{"text": "second at same time", "emoticon": null}]}},
+    {"_id": "c-a", "content_type": "video", "content_id": "2500000001",
+     "content_offset_seconds": 5.25, "commenter": {"display_name": "Al", "_id": "1", "name": "al"},
+     "message": {"body": "Kappa nice BTTVwow", "fragments": [
+        {"text": "Kappa", "emoticon": {"emoticon_id": "25"}},
+        {"text": " nice ", "emoticon": null},
+        {"text": "BTTVwow", "emoticon": {"emoticon_id": "bttv99"}}]}},
+    {"_id": "c-sub", "content_type": "video", "content_id": "2500000001",
+     "content_offset_seconds": 5.2499, "commenter": {"display_name": "", "name": "subbot", "_id": "3"},
+     "message": {"body": "sub-second earlier", "fragments": []}},
+    {"_id": "c-a", "content_type": "video", "content_id": "2500000001",
+     "content_offset_seconds": 5.25, "commenter": {"display_name": "Al", "_id": "1", "name": "al"},
+     "message": {"body": "Kappa nice BTTVwow", "fragments": [
+        {"text": "Kappa", "emoticon": {"emoticon_id": "25"}},
+        {"text": " nice ", "emoticon": null},
+        {"text": "BTTVwow", "emoticon": {"emoticon_id": "bttv99"}}]}},
+    {"_id": "c-bad-emote", "content_type": "video", "content_id": "2500000001",
+     "content_offset_seconds": 0, "commenter": {"display_name": "Eve", "_id": "4"},
+     "message": {"body": "evil", "fragments": [{"text": "evil", "emoticon": {"emoticon_id": "../x?y=1"}}]}}
+  ],
+  "embeddedData": {"thirdParty": [{"id": "bttv99", "name": "BTTVwow"}], "firstParty": [], "twitchBadges": [], "twitchBits": []}
+}

@@ -136,6 +136,22 @@ function formatDuration(seconds) {
     return `${hDisplay}:${mDisplay}:${sDisplay}`;
 }
 
+// Chat replay sidecar: "<video file name without extension>.chat.json", uploaded
+// next to the video in the same IA item (written by scripts/chat-sync). Exact name match
+// only - never guessed from the title, date or Twitch id. Returns the file entry
+// or null.
+const VIDEO_EXT = /\.(mp4|mkv|webm)$/i;
+function findChatSidecar(files, videoName) {
+    if (typeof videoName !== 'string' || !VIDEO_EXT.test(videoName)) return null;
+    const current = files.filter(f => f && typeof f.name === 'string' && !f.old_version && !f.deleted);
+    const stem = videoName.replace(VIDEO_EXT, '');
+    // Count all current videos, even ones too small to appear in the manifest.
+    if (current.filter(f => VIDEO_EXT.test(f.name) && f.name.replace(VIDEO_EXT, '') === stem).length > 1) return null;
+    const expected = `${videoName.replace(VIDEO_EXT, '')}.chat.json`;
+    const hits = current.filter(f => f.name === expected && Number.isFinite(Number(f.size)) && Number(f.size) > 0);
+    return hits.length === 1 ? hits[0] : null;
+}
+
 async function fetchVods() {
     let allVods = [];
     // Last good catalog: if an item can't be read this run, its VODs are kept from here
@@ -182,6 +198,13 @@ async function fetchVods() {
                 return isVideo && file.format !== 'Thumbnail' && file.format !== 'Metadata' && file.size > 1000000; // >1MB
             });
 
+            // Two videos sharing a base name (a.mp4 + a.mkv) would claim one sidecar: skip it.
+            const baseCounts = new Map();
+            for (const f of videoFiles) {
+                const base = f.name.replace(VIDEO_EXT, '');
+                baseCounts.set(base, (baseCounts.get(base) || 0) + 1);
+            }
+
             const vods = await Promise.all(videoFiles.map(async file => {
                 const { date, title } = parseDateAndTitle(file);
                 
@@ -207,6 +230,8 @@ async function fetchVods() {
                 const safeFilename = `${ITEM_ID}_${file.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.jpg`;
                 const localThumbnailUrl = await downloadThumbnail(thumbnailUrl, safeFilename);
 
+                const sidecar = baseCounts.get(file.name.replace(VIDEO_EXT, '')) === 1 ? findChatSidecar(files, file.name) : null;
+
                 return {
                     id: `${ITEM_ID}/${file.name}`, // Create a composite ID to avoid collisions across items
                     item_id: ITEM_ID,
@@ -222,7 +247,9 @@ async function fetchVods() {
                     drive: [], // Keep structure compatible
                     youtube: [],
                     games: [],
-                    chapters: []
+                    chapters: [],
+                    // The sidecar owns the offset; do not silently override it with zero.
+                    ...(sidecar && { chat: { url: `${DOWNLOAD_BASE}/${encodeURIComponent(sidecar.name)}` } })
                 };
             }));
 
@@ -262,4 +289,6 @@ async function fetchVods() {
     }
 }
 
-fetchVods();
+if (require.main === module) fetchVods();
+
+module.exports = { findChatSidecar };

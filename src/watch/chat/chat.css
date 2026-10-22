@@ -1,0 +1,24 @@
+/* chat_replay.log: only what Tailwind can't say inline. */
+
+/* A freshly arrived row eases up into place. No opacity: if animations pause
+   (background tab) the row still shows. */
+@keyframes chat-in {
+  from {
+    transform: translateY(6px);
+  }
+  to {
+    transform: none;
+  }
+}
+.chat-in {
+  animation: chat-in 0.22s var(--ease-snap) both;
+}
+
+html[data-fx="lite"] .chat-in {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-in {
+    animation: none;
+  }
+}

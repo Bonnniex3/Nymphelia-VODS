@@ -1,0 +1,11 @@
+[Unit]
+Description=Check the independent Nymphelia chat queue hourly
+
+[Timer]
+OnBootSec=5m
+OnUnitInactiveSec=1h
+RandomizedDelaySec=5m
+Unit=nymphelia-chat.service
+
+[Install]
+WantedBy=timers.target

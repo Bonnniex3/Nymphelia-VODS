@@ -1,0 +1,24 @@
+[Unit]
+Description=Automatic Nymphelia archived chat download and publication (forward-only)
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/opt/vodsync/config.json
+ConditionPathExists=/opt/vodsync/chat/bin/TwitchDownloaderCLI
+
+[Service]
+Type=oneshot
+# The VM user that owns /opt/vodsync (the existing vodsync/Smizzles chat units run as ubuntu). Override
+# with `systemctl edit nymphelia-chat.service` if the VM user differs; it must be able to read
+# /opt/vodsync/config.json, the ia credentials, and the vodsync.service journal (groups adm/systemd-journal).
+User=ubuntu
+WorkingDirectory=/opt/vodsync/chat-nymphelia
+# --not-before is the forward-only cutoff (persisted in forward-only.json on the first run; it can only be raised).
+ExecStart=/opt/vodsync/venv/bin/python /opt/vodsync/chat-nymphelia/chat_auto.py --run --publish --deploy --not-before 2026-10-22T04:00:00Z
+TimeoutStartSec=24h
+Nice=15
+IOSchedulingClass=idle
+CPUWeight=10
+MemoryMax=768M
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
