@@ -27,7 +27,19 @@ describe("matchTrigger", () => {
     expect(matchTrigger(msg(1, "LiaaBot", `🌺 deep breathing for two minutes! in progress~ ${TAIL}`))?.name).toBe("deep breathing for two minutes!");
   });
 
+  it("reads a Kukuroneko kunekobot announcement", () => {
+    expect(matchTrigger(msg(1, "kunekobot", "♡ ear licks is in progress for @LuisAguilar heart"))).toEqual({ name: "ear licks", who: "LuisAguilar" });
+    expect(matchTrigger(msg(1, "KunekoBot", "♡ fizzy lotion :)) is in progress for @ginsho_ heart"))).toEqual({ name: "fizzy lotion :))", who: "ginsho_" });
+    expect(matchTrigger(msg(1, "kunekobot", "♡ Quack Quack is in progress for @pemgwim"))?.name).toBe("Quack Quack");
+    // the earlier wording, without the leading heart
+    expect(matchTrigger(msg(1, "kunekobot", "ear blowing is in progress for @gossbae ♡"))).toEqual({ name: "ear blowing", who: "gossbae" });
+    expect(matchTrigger(msg(1, "kunekobot", "your choice / fave is in progress for @ColdNicoo ♡"))?.name).toBe("your choice / fave");
+    expect(matchTrigger(msg(1, "kunekobot", "♡ positive affirmations https://x.co/a is in progress for @ChiefChud heart"))?.name).toBe("positive affirmations https://x.co/a");
+  });
+
   it("ignores other bot chatter", () => {
+    expect(matchTrigger(msg(1, "kunekobot", '@ginsho_ Your trigger "fizzy lotion" is in the queue at #2. You have 3 points left! heart'))).toBeNull();
+    expect(matchTrigger(msg(1, "kunekobot", "@egelpom Thank you for the sub ♡ Feel free to use your points to redeem a trigger ♡ Type !redeem <trigger> to use one. heart"))).toBeNull();
     expect(matchTrigger(msg(1, "LiaaBot", "nympheliaDinkdonk Redeems are now open nympheliaKissu Enjoy your shopping at Lia inc"))).toBeNull();
     expect(matchTrigger(msg(1, "LiaaBot", "@viewer Added Reverse kisses to the queue for 5 points!"))).toBeNull();
     expect(matchTrigger(msg(1, "starqueueos", '@viewer Your trigger "negative affirmations" is in the queue at #2. You have 3 points left.'))).toBeNull();
@@ -37,6 +49,7 @@ describe("matchTrigger", () => {
   it("does not let a viewer fake an entry", () => {
     expect(matchTrigger(msg(1, "viewer123", 'Smizzles is doing "Good Boy ♡" for @someone'))).toBeNull();
     expect(matchTrigger(msg(1, "viewer123", `🌺 free money in progress~ ${TAIL}`))).toBeNull();
+    expect(matchTrigger(msg(1, "viewer123", "♡ free money is in progress for @someone heart"))).toBeNull();
   });
 
   it("is safe on malformed input", () => {

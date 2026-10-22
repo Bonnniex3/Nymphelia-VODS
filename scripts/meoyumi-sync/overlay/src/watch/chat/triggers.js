@@ -9,7 +9,7 @@ import { videoTimeOf } from "./replay";
  *
  * Rules are matched on the chat user (case-insensitive) AND the message shape, so a viewer
  * who copies a bot line cannot add an entry. The two sites share this file, so it carries
- * the rules for both channels.
+ * the rules for every channel.
  */
 export const TRIGGER_RULES = [
   {
@@ -21,6 +21,12 @@ export const TRIGGER_RULES = [
     // Nymphelia: LiaaBot (and its earlier name pheliabot) → 🌺 sloppy earlicks in progress~ Please mute …
     users: ["liaabot", "pheliabot"],
     pattern: /^🌺\s*(?<name>.+?)\s+in progress~/u,
+  },
+  {
+    // Kukuroneko: kunekobot → ♡ ear licks is in progress for @viewer heart  (the trailing word is an emote;
+    // earlier streams had no leading ♡ and ended in "♡": ear licks is in progress for @viewer ♡)
+    users: ["kunekobot"],
+    pattern: /^(?:♡\s*)?(?<name>.+?)\s+is in progress for @(?<who>\w+)(?:\s+\S+)?\s*$/u,
   },
 ];
 
