@@ -19,7 +19,9 @@ import NowPlaying from "./NowPlaying";
 import ChapterList from "./ChapterList";
 import MoreVods from "./MoreVods";
 import ChatPanel from "./chat/ChatPanel";
+import TriggerPanel from "./chat/TriggerPanel";
 import useChatReplay from "./chat/useChatReplay";
+import useTriggers from "./chat/useTriggers";
 import SignalLost from "./SignalLost";
 import useCopy from "./useCopy";
 import useAmbient from "./useAmbient";
@@ -98,6 +100,7 @@ function WatchView({ vod, slug }) {
   const [copied, copy] = useCopy();
   const glow = useAmbient(player, vod.thumbnail_url);
   const chat = useChatReplay(vod);
+  const triggers = useTriggers(chat);
 
   const { newer, older } = useMemo(() => neighbours(vod), [vod]);
   const chapters = vod.chapters?.length ? vod.chapters : null;
@@ -312,6 +315,7 @@ function WatchView({ vod, slug }) {
             className="watch-aside relative z-10 flex flex-col gap-4 *:shrink-0 md:grid md:grid-cols-2 md:items-start lg:flex lg:items-stretch lg:-mr-2.5 lg:w-[344px] lg:shrink-0 lg:overflow-y-auto lg:pr-2.5 lg:pb-3 xl:w-[392px] 2xl:w-[432px]"
           >
             <ChatPanel player={live} chat={chat} onSeek={seek} className="md:col-span-2" />
+            <TriggerPanel triggers={triggers} time={time} onSeek={seek} className="md:col-span-2" />
             <NowPlaying vod={vod} time={time} duration={duration} status={status} chapterCount={chapters?.length ?? 0} className="md:col-span-2" />
             {chapters && (
               <ChapterList

@@ -1,0 +1,36 @@
+/* triggers.lst: only what Tailwind can't say inline. */
+
+/* The trigger that just took effect: its row eases in from the left and its accent bar grows.
+   No opacity, so a paused animation (background tab) still leaves the row readable. */
+@keyframes trigger-on {
+  from {
+    transform: translateX(-4px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes trigger-bar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+.trigger-on {
+  animation: trigger-on 0.32s var(--ease-snap) both;
+}
+.trigger-bar {
+  animation: trigger-bar 0.4s var(--ease-snap) both;
+}
+
+html[data-fx="lite"] :is(.trigger-on, .trigger-bar) {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .trigger-on,
+  .trigger-bar {
+    animation: none;
+  }
+}

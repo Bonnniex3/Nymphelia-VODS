@@ -53,15 +53,15 @@
     "src/watch/Watch.jsx": [
       [
         "import MoreVods from \"./MoreVods\";\n",
-        "import MoreVods from \"./MoreVods\";\nimport ChatPanel from \"./chat/ChatPanel\";\nimport useChatReplay from \"./chat/useChatReplay\";\n"
+        "import MoreVods from \"./MoreVods\";\nimport ChatPanel from \"./chat/ChatPanel\";\nimport TriggerPanel from \"./chat/TriggerPanel\";\nimport useChatReplay from \"./chat/useChatReplay\";\nimport useTriggers from \"./chat/useTriggers\";\n"
       ],
       [
         "const glow = useAmbient(player, vod.thumbnail_url);\n",
-        "const glow = useAmbient(player, vod.thumbnail_url);\n  const chat = useChatReplay(vod);\n"
+        "const glow = useAmbient(player, vod.thumbnail_url);\n  const chat = useChatReplay(vod);\n  const triggers = useTriggers(chat);\n"
       ],
       [
         "<NowPlaying vod={vod} time={time}",
-        "<ChatPanel player={live} chat={chat} onSeek={seek} className=\"md:col-span-2\" />\n            <NowPlaying vod={vod} time={time}"
+        "<ChatPanel player={live} chat={chat} onSeek={seek} className=\"md:col-span-2\" />\n            <TriggerPanel triggers={triggers} time={time} onSeek={seek} className=\"md:col-span-2\" />\n            <NowPlaying vod={vod} time={time}"
       ]
     ]
   }
